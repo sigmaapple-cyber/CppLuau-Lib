@@ -9,8 +9,8 @@ C++-inspired programming concepts implemented with native Luau. Built for Roblox
 | Module | Status | Description |
 | --- | --- | --- |
 | `Class` | Implemented | Class objects, inheritance, constructor chaining, inherited methods, and `IsA`. |
-| `Struct` | Implemented | Schema-based values with copied defaults and field checks. |
-| `Enum` | Implemented | Named constant collections with immutable lookup values. |
+| `Struct` | Implemented | Schema-based values with defaults. |
+| `Enum` | Implemented | Named constant collections. |
 | `Interface` | Planned | Runtime contract and method validation. |
 | `Namespace` | Planned | Named scopes for organizing related values. |
 | `Cast` | Planned | Explicit conversion and type-check helpers. |
@@ -63,7 +63,7 @@ print(player:GetClassName()) -- Player
 
 Constructors run from the base class to the derived class. Every constructor receives the same arguments, so a derived constructor can use only the arguments it needs. Methods resolve from the instance's class and then through its base classes.
 
-Guides: [Class](docs/Class.md) · [Struct](docs/Struct.md) · [Enum](docs/Enum.md).
+See the [Class guide](docs/Class.md) for the full API and inheritance behavior.
 
 ## Repository layout
 
@@ -73,9 +73,6 @@ CppLuau-Lib/
 │   ├── ISSUE_TEMPLATE/
 │   └── workflows/
 ├── docs/
-│   ├── Class.md
-│   ├── Struct.md
-│   └── Enum.md
 ├── examples/
 ├── src/
 │   ├── init.lua

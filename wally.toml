@@ -1,0 +1,12 @@
+[package]
+name = "sigmaapple/cpp-luau-lib"
+description = "C++-inspired programming concepts implemented in Luau."
+version = "0.1.0"
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+include = ["src/**", "docs/**", "default.project.json", "README.md", "wally.toml"]
+
+[dependencies]
+
+[dev-dependencies]
+TestEZ = "roblox/testez@0.4.1"

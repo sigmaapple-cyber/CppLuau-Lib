@@ -6,7 +6,7 @@ A Luau library implementing C++-inspired programming concepts. This is not a C++
 
 - `src/init.lua`: public package entry point.
 - `src/Class.lua`: class objects, inheritance, constructors, and instance checks.
-- `src/Struct.lua`: schema-based data values and copied defaults.
+- `src/Struct.lua`: schema-based data values.
 - `src/Enum.lua`: named constant collections.
 - `tests/specs`: TestEZ behavior tests.
 - `tests/RunTests.server.lua`: Studio test runner.

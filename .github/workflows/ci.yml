@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Format, lint, and build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install project tools
+        uses: CompeyDev/setup-rokit@v0.2.1
+
+      - name: Check formatting
+        run: stylua --check src tests examples
+
+      - name: Lint source
+        run: selene src
+
+      - name: Install test dependencies
+        run: wally install
+
+      - name: Build library
+        run: rojo build default.project.json -o /tmp/CppLuauLib.rbxm
+
+      - name: Build test place
+        run: rojo build test.project.json -o /tmp/CppLuauLib-Tests.rbxlx

@@ -1,0 +1,24 @@
+{
+	"name": "CppLuauLib-Tests",
+	"tree": {
+		"$className": "DataModel",
+		"ReplicatedStorage": {
+			"$className": "ReplicatedStorage",
+			"CppLuauLib": {
+				"$path": "src"
+			},
+			"Tests": {
+				"$path": "tests/specs"
+			},
+			"Packages": {
+				"$path": "Packages"
+			}
+		},
+		"ServerScriptService": {
+			"$className": "ServerScriptService",
+			"RunTests": {
+				"$path": "tests/RunTests.server.lua"
+			}
+		}
+	}
+}

@@ -1,0 +1,17 @@
+{
+	"languageMode": "strict",
+	"lint": {
+		"*": true
+	},
+	"lintErrors": true,
+	"typeErrors": true,
+	"globals": [
+		"afterAll",
+		"afterEach",
+		"beforeAll",
+		"beforeEach",
+		"describe",
+		"expect",
+		"it"
+	]
+}
