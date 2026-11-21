@@ -27,8 +27,6 @@ module.new = function(name: string, schema: { [string]: any })
 		{
 			Name = name,
 			Schema = schema,
-			;
-			;
 		} :: RawStructObject, { __index = module }
 	)) :: StructObject
 end
