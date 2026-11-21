@@ -33,10 +33,13 @@ local module = {}
 module.new = function(values: { any }?)
 	assert(values == nil or type(values) == "table", "Set values must be a table")
 
-	local object = setmetatable({
-		_Items = {};
-		_Count = 0;
-	} :: RawSetObject, { __index = module }) :: SetObject
+	local object = setmetatable(
+		{
+			_Items = {},
+			_Count = 0,
+		} :: RawSetObject,
+		{ __index = module }
+	) :: SetObject
 
 	if values then
 		for _, value in values do

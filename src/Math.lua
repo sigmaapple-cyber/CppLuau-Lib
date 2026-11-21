@@ -34,7 +34,13 @@ end
 --[[
 	Maps a value from one range into another.
 ]]
-module.Remap = function(value: number, fromMinimum: number, fromMaximum: number, toMinimum: number, toMaximum: number): number
+module.Remap = function(
+	value: number,
+	fromMinimum: number,
+	fromMaximum: number,
+	toMinimum: number,
+	toMaximum: number
+): number
 	local alpha = module.InverseLerp(fromMinimum, fromMaximum, value)
 	return module.Lerp(toMinimum, toMaximum, alpha)
 end

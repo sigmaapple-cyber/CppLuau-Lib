@@ -35,7 +35,7 @@ module.new = function(values: { any }?)
 	local last = 0
 
 	if values then
-		for _, value in values do
+		for _, value in ipairs(values) do
 			assert(value ~= nil, "Queue cannot store nil")
 
 			last += 1
@@ -43,11 +43,16 @@ module.new = function(values: { any }?)
 		end
 	end
 
-	return (setmetatable({
-		_Items = raw;
-		_First = if last > 0 then 1 else 0;
-		_Last = last;
-	} :: RawQueueObject, { __index = module })) :: QueueObject
+	return (
+		setmetatable(
+			{
+				_Items = raw,
+				_First = if last > 0 then 1 else 0,
+				_Last = last,
+			} :: RawQueueObject,
+			{ __index = module }
+		)
+	) :: QueueObject
 end
 
 --[[

@@ -27,10 +27,15 @@ local module = {}
 module.new = function(...)
 	local values = table.pack(...)
 
-	return (setmetatable({
-		_Values = values;
-		_Count = values.n;
-	} :: RawTupleObject, { __index = module })) :: TupleObject
+	return (
+		setmetatable(
+			{
+				_Values = values,
+				_Count = values.n,
+			} :: RawTupleObject,
+			{ __index = module }
+		)
+	) :: TupleObject
 end
 
 --[[

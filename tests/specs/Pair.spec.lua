@@ -22,9 +22,11 @@ return function()
 		end)
 
 		it("maps both values", function()
-			local first, second = Pair.new(2, 3):Map(function(a, b)
-				return a * 2, b * 3
-			end):Unpack()
+			local first, second = Pair.new(2, 3)
+				:Map(function(a, b)
+					return a * 2, b * 3
+				end)
+				:Unpack()
 
 			expect(first).to.equal(4)
 			expect(second).to.equal(9)

@@ -23,10 +23,15 @@ local module = {}
 	Creates a pair of values.
 ]]
 module.new = function(first: any, second: any)
-	return (setmetatable({
-		First = first;
-		Second = second;
-	} :: RawPairObject, { __index = module })) :: PairObject
+	return (
+		setmetatable(
+			{
+				First = first,
+				Second = second,
+			} :: RawPairObject,
+			{ __index = module }
+		)
+	) :: PairObject
 end
 
 --[[

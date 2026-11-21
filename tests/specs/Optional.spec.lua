@@ -29,9 +29,11 @@ return function()
 		end)
 
 		it("preserves empty values when mapping", function()
-			expect(Optional.None():Map(function(value)
-				return value
-			end):IsNone()).to.equal(true)
+			expect(Optional.None()
+				:Map(function(value)
+					return value
+				end)
+				:IsNone()).to.equal(true)
 		end)
 
 		it("chains optional operations", function()

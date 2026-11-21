@@ -35,9 +35,14 @@ local module = {}
 module.new = function(values: { any }?)
 	assert(values == nil or type(values) == "table", "Vector values must be a table")
 
-	return (setmetatable({
-		_Items = if values then table.clone(values) else {};
-	} :: RawVectorObject, { __index = module })) :: VectorObject
+	return (
+		setmetatable(
+			{
+				_Items = if values then table.clone(values) else {},
+			} :: RawVectorObject,
+			{ __index = module }
+		)
+	) :: VectorObject
 end
 
 --[[

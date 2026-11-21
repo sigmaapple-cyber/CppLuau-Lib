@@ -30,11 +30,16 @@ local module = {}
 module.new = function(name: string)
 	assert(type(name) == "string" and name:match("%S") ~= nil, "Namespace name cannot be empty")
 
-	return (setmetatable({
-		_Namespace = true,
-		Name = name,
-		Values = {},
-	} :: RawNamespaceObject, { __index = module })) :: NamespaceObject
+	return (
+		setmetatable(
+			{
+				_Namespace = true,
+				Name = name,
+				Values = {},
+			} :: RawNamespaceObject,
+			{ __index = module }
+		)
+	) :: NamespaceObject
 end
 
 --[[

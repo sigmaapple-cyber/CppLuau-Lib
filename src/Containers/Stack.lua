@@ -28,9 +28,14 @@ local module = {}
 module.new = function(values: { any }?)
 	assert(values == nil or type(values) == "table", "Stack values must be a table")
 
-	return (setmetatable({
-		_Items = if values then table.clone(values) else {};
-	} :: RawStackObject, { __index = module })) :: StackObject
+	return (
+		setmetatable(
+			{
+				_Items = if values then table.clone(values) else {},
+			} :: RawStackObject,
+			{ __index = module }
+		)
+	) :: StackObject
 end
 
 --[[

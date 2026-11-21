@@ -29,20 +29,30 @@ local module = {}
 	Creates a successful result.
 ]]
 module.Ok = function(value: any)
-	return (table.freeze(setmetatable({
-		_IsOk = true;
-		_Value = value;
-	} :: RawResultObject, { __index = module }))) :: ResultObject
+	return (
+		table.freeze(setmetatable(
+			{
+				_IsOk = true,
+				_Value = value,
+			} :: RawResultObject,
+			{ __index = module }
+		))
+	) :: ResultObject
 end
 
 --[[
 	Creates an error result.
 ]]
 module.Err = function(value: any)
-	return (table.freeze(setmetatable({
-		_IsOk = false;
-		_Value = value;
-	} :: RawResultObject, { __index = module }))) :: ResultObject
+	return (
+		table.freeze(setmetatable(
+			{
+				_IsOk = false,
+				_Value = value,
+			} :: RawResultObject,
+			{ __index = module }
+		))
+	) :: ResultObject
 end
 
 --[[

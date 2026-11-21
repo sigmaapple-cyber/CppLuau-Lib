@@ -30,17 +30,25 @@ module.new = function(name: string, methods: { string })
 	local seen = {}
 
 	for _, method in methods do
-		assert(type(method) == "string" and method:match("%S") ~= nil, "Interface method names must be non-empty strings")
+		assert(
+			type(method) == "string" and method:match("%S") ~= nil,
+			"Interface method names must be non-empty strings"
+		)
 		assert(not seen[method], "Duplicate interface method: " .. method)
 
 		seen[method] = true
 		table.insert(raw, method)
 	end
 
-	return (setmetatable({
-		Name = name;
-		Methods = table.freeze(raw);
-	} :: RawInterfaceObject, { __index = module })) :: InterfaceObject
+	return (
+		setmetatable(
+			{
+				Name = name,
+				Methods = table.freeze(raw),
+			} :: RawInterfaceObject,
+			{ __index = module }
+		)
+	) :: InterfaceObject
 end
 
 --[[

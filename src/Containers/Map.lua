@@ -30,10 +30,13 @@ local module = {}
 	Creates an empty map.
 ]]
 module.new = function()
-	return (setmetatable({
-		_Items = {};
-		_Count = 0;
-	} :: RawMapObject, { __index = module })) :: MapObject
+	return (setmetatable(
+		{
+			_Items = {},
+			_Count = 0,
+		} :: RawMapObject,
+		{ __index = module }
+	)) :: MapObject
 end
 
 --[[

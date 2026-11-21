@@ -24,10 +24,15 @@ local module = {}
 	Creates an active cleanup scope.
 ]]
 module.new = function()
-	return (setmetatable({
-		_Callbacks = {};
-		_Destroyed = false;
-	} :: RawScopeObject, { __index = module })) :: ScopeObject
+	return (
+		setmetatable(
+			{
+				_Callbacks = {},
+				_Destroyed = false,
+			} :: RawScopeObject,
+			{ __index = module }
+		)
+	) :: ScopeObject
 end
 
 --[[

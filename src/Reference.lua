@@ -24,9 +24,12 @@ local module = {}
 	Creates a reference to a mutable value.
 ]]
 module.new = function(value: any)
-	return (setmetatable({
-		Value = value;
-	} :: RawReferenceObject, { __index = module })) :: ReferenceObject
+	return (setmetatable(
+		{
+			Value = value,
+		} :: RawReferenceObject,
+		{ __index = module }
+	)) :: ReferenceObject
 end
 
 --[[

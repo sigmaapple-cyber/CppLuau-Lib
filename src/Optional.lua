@@ -23,10 +23,13 @@ export type OptionalObject = typeof(setmetatable({} :: RawOptionalObject, { __in
 
 local module = {}
 
-local none = table.freeze(setmetatable({
-	_HasValue = false;
-	_Value = nil;
-} :: RawOptionalObject, { __index = module })) :: OptionalObject
+local none = table.freeze(setmetatable(
+	{
+		_HasValue = false,
+		_Value = nil,
+	} :: RawOptionalObject,
+	{ __index = module }
+)) :: OptionalObject
 
 --[[
 	Wraps a non-nil value in an Optional.
@@ -34,10 +37,15 @@ local none = table.freeze(setmetatable({
 module.Some = function(value: any)
 	assert(value ~= nil, "Optional.Some cannot contain nil")
 
-	return (table.freeze(setmetatable({
-		_HasValue = true;
-		_Value = value;
-	} :: RawOptionalObject, { __index = module }))) :: OptionalObject
+	return (
+		table.freeze(setmetatable(
+			{
+				_HasValue = true,
+				_Value = value,
+			} :: RawOptionalObject,
+			{ __index = module }
+		))
+	) :: OptionalObject
 end
 
 --[[
