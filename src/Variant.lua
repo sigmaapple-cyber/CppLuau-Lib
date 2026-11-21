@@ -27,10 +27,15 @@ local module = {}
 module.new = function(tag: string, value: any)
 	assert(type(tag) == "string" and tag:match("%S") ~= nil, "Variant tag cannot be empty")
 
-	return (setmetatable({
-		Tag = tag;
-		Value = value;
-	} :: RawVariantObject, { __index = module })) :: VariantObject
+	return (
+		setmetatable(
+			{
+				Tag = tag,
+				Value = value,
+			} :: RawVariantObject,
+			{ __index = module }
+		)
+	) :: VariantObject
 end
 
 --[[

@@ -31,10 +31,15 @@ module.new = function(size: number, fill: any)
 
 	local raw = table.create(size, fill)
 
-	return (setmetatable({
-		_Items = raw;
-		_Size = size;
-	} :: RawArrayObject, { __index = module })) :: ArrayObject
+	return (
+		setmetatable(
+			{
+				_Items = raw,
+				_Size = size,
+			} :: RawArrayObject,
+			{ __index = module }
+		)
+	) :: ArrayObject
 end
 
 --[[

@@ -17,10 +17,7 @@ type ProtoSchema = {
 	ToString: (self: StringBuilderObject) -> string,
 }
 
-export type StringBuilderObject = typeof(setmetatable(
-	{} :: RawStringBuilderObject,
-	{ __index = {} :: ProtoSchema }
-))
+export type StringBuilderObject = typeof(setmetatable({} :: RawStringBuilderObject, { __index = {} :: ProtoSchema }))
 
 local module = {}
 
@@ -28,10 +25,15 @@ local module = {}
 	Creates an empty string builder.
 ]]
 module.new = function()
-	return (setmetatable({
-		_Parts = {};
-		_Length = 0;
-	} :: RawStringBuilderObject, { __index = module })) :: StringBuilderObject
+	return (
+		setmetatable(
+			{
+				_Parts = {},
+				_Length = 0,
+			} :: RawStringBuilderObject,
+			{ __index = module }
+		)
+	) :: StringBuilderObject
 end
 
 --[[

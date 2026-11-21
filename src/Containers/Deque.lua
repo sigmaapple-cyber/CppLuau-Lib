@@ -60,12 +60,17 @@ module.new = function(values: { any }?)
 		end
 	end
 
-	return (setmetatable({
-		_Items = raw;
-		_First = 1;
-		_Count = size;
-		_Capacity = capacity;
-	} :: RawDequeObject, { __index = module })) :: DequeObject
+	return (
+		setmetatable(
+			{
+				_Items = raw,
+				_First = 1,
+				_Count = size,
+				_Capacity = capacity,
+			} :: RawDequeObject,
+			{ __index = module }
+		)
+	) :: DequeObject
 end
 
 --[[

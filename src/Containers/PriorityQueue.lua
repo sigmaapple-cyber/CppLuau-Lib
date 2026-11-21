@@ -21,10 +21,7 @@ type ProtoSchema = {
 	ToArray: (self: PriorityQueueObject) -> { any },
 }
 
-export type PriorityQueueObject = typeof(setmetatable(
-	{} :: RawPriorityQueueObject,
-	{ __index = {} :: ProtoSchema }
-))
+export type PriorityQueueObject = typeof(setmetatable({} :: RawPriorityQueueObject, { __index = {} :: ProtoSchema }))
 
 local module = {}
 
@@ -94,12 +91,15 @@ end
 module.new = function(values: { any }?, compare: Compare?)
 	assert(values == nil or type(values) == "table", "PriorityQueue values must be a table")
 
-	local object = setmetatable({
-		_Heap = {};
-		_Compare = compare or function(a, b)
-			return a > b
-		end;
-	} :: RawPriorityQueueObject, { __index = module }) :: PriorityQueueObject
+	local object = setmetatable(
+		{
+			_Heap = {},
+			_Compare = compare or function(a, b)
+				return a > b
+			end,
+		} :: RawPriorityQueueObject,
+		{ __index = module }
+	) :: PriorityQueueObject
 
 	if values then
 		for _, value in ipairs(values) do
