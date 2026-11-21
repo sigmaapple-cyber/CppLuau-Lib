@@ -7,12 +7,15 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 ## [Unreleased]
 
 ### Added
-- Public package entry point.
-- TestEZ specs for Class, Struct, and Enum.
-- Class API guide and inheritance example.
-- Rojo project files, Wally metadata, pinned development tools, and CI validation.
-- Contribution guide and GitHub issue and pull request templates.
+- Runtime Interface contracts and nested Namespace scopes.
+- Optional, Result, Pair, Tuple, and Reference value utilities.
+- Vector, Stack, Queue, Map, and Set containers.
+- Array Algorithms and Iterator helpers.
+- Scope cleanup, String, Math, and Type utilities.
+- TestEZ specs and API documentation for the new modules.
+- A container usage example.
 
 ### Changed
-- Expanded Class with typed constructor callbacks, class inspection helpers, and identity-aware IsA checks.
-- Updated the README with module status, usage, repository layout, and development commands.
+- Expanded the public entry point to export all implemented modules.
+- Reworked the README and project instructions to cover the broader library.
+- Vector resizing now requires an explicit fill value when growing.

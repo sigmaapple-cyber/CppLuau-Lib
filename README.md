@@ -1,84 +1,117 @@
 # CppLuau-Lib
 
-C++-inspired programming concepts implemented with native Luau. Built for Roblox developers who want class-like objects, structured values, enums, and reusable abstractions without a C++ compiler or transpilation step.
+A Luau standard-library-inspired toolkit for Roblox. It brings C++-style programming concepts into native Luau: classes, contracts, value wrappers, containers, algorithms, iterators, and utilities.
 
-> **Status:** Early development. Public APIs may change before the first stable release.
+This is **not** a C++ compiler or transpiler. It uses Luau tables, functions, metatables, and the Roblox runtime.
+
+> **Status:** Early development. APIs may change before the first stable release.
 
 ## Modules
 
-| Module | Status | Description |
-| --- | --- | --- |
-| `Class` | Implemented | Class objects, inheritance, constructor chaining, inherited methods, and `IsA`. |
-| `Struct` | Implemented | Schema-based values with defaults. |
-| `Enum` | Implemented | Named constant collections. |
-| `Interface` | Planned | Runtime contract and method validation. |
-| `Namespace` | Planned | Named scopes for organizing related values. |
-| `Cast` | Planned | Explicit conversion and type-check helpers. |
-| `Containers` | Planned | List, Stack, Queue, Map, and Set. |
+### Core concepts
+
+| Module | Purpose |
+| --- | --- |
+| [Class](docs/Class.md) | Class objects, inheritance, constructor chaining, and IsA. |
+| [Struct](docs/Struct.md) | Schema-based values with copied defaults. |
+| [Enum](docs/Enum.md) | Named constant collections. |
+| [Interface](docs/ContractsAndScopes.md#interface) | Runtime method contracts. |
+| [Namespace](docs/ContractsAndScopes.md#namespace) | Named, nestable scopes for related values. |
+
+### Value types
+
+| Module | Purpose |
+| --- | --- |
+| [Optional](docs/Values.md#optional) | A present value or an empty value. |
+| [Result](docs/Values.md#result) | Success or error values with mapping and chaining. |
+| [Pair](docs/Values.md#pair) | A pair of related values. |
+| [Tuple](docs/Values.md#tuple) | Fixed-length values that preserve nil positions. |
+| [Reference](docs/Values.md#reference) | A shared mutable value box. |
+
+### Containers
+
+| Module | Purpose |
+| --- | --- |
+| Containers.Vector | Resizable indexed sequence. |
+| Containers.Stack | Last-in, first-out container. |
+| Containers.Queue | First-in, first-out container. |
+| Containers.Map | Key-value collection. |
+| Containers.Set | Unique-value collection and set operations. |
+
+See [Containers](docs/Containers.md) for the complete API.
+
+### Algorithms and utilities
+
+| Module | Purpose |
+| --- | --- |
+| [Algorithms](docs/Algorithms.md) | Find, filter, map, reduce, sort, reverse, unique, and predicates. |
+| [Iterator](docs/ContractsAndScopes.md#iterator) | Numeric ranges, enumerate, zip, and reverse iteration. |
+| [Scope](docs/ContractsAndScopes.md#scope) | Reverse-order deferred cleanup. |
+| [String](docs/Utilities.md#string) | Plain string operations and transformations. |
+| [Math](docs/Utilities.md#math) | Numeric helpers, interpolation, wrapping, and factorial. |
+| [Type](docs/Utilities.md#type) | Runtime type and value inspection. |
 
 ## Quick start
 
-The repository includes a Rojo project. Build the library as a Roblox model:
+Build the library as a Roblox model with Rojo:
 
-```sh
+~~~sh
 rojo build default.project.json -o CppLuauLib.rbxm
-```
+~~~
 
-Import the resulting model into Studio or include the `src` folder in your own Rojo project. The public entry point exports all implemented modules:
+Require the package's public entry point:
 
-```lua
+~~~lua
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local CppLuau = require(ReplicatedStorage:WaitForChild("CppLuauLib"))
 
 local Class = CppLuau.Class
-local Struct = CppLuau.Struct
-local Enum = CppLuau.Enum
-```
+local Containers = CppLuau.Containers
+local Optional = CppLuau.Optional
+~~~
 
-## Class example
+## Example
 
-```lua
-local Entity = Class.new("Entity")
-	:Constructor(function(self, name)
-		self.Name = name
-	end)
+~~~lua
+local Queue = CppLuau.Containers.Queue
+local Optional = CppLuau.Optional
 
-function Entity:GetName()
-	return self.Name
-end
+local tasks = Queue.new()
+tasks:Enqueue("Load")
+tasks:Enqueue("Save")
 
-local Player = Entity:Extend("Player")
-	:Constructor(function(self, name, level)
-		self.Level = level
-	end)
+local nextTask = Optional.Some(tasks:Dequeue())
+print(nextTask:Unwrap()) -- Load
+~~~
 
-local player = Player:Create("Alex", 10)
-
-print(player:GetName())
-print(player:IsA("Player")) -- true
-print(player:IsA("Entity")) -- true
-print(player:IsA(Entity)) -- true
-print(player:GetClassName()) -- Player
-```
-
-Constructors run from the base class to the derived class. Every constructor receives the same arguments, so a derived constructor can use only the arguments it needs. Methods resolve from the instance's class and then through its base classes.
-
-See the [Class guide](docs/Class.md) for the full API and inheritance behavior.
+A larger example is available in [examples/containers.luau](examples/containers.luau).
 
 ## Repository layout
 
-```text
+~~~text
 CppLuau-Lib/
 ├── .github/
-│   ├── ISSUE_TEMPLATE/
-│   └── workflows/
 ├── docs/
 ├── examples/
 ├── src/
-│   ├── init.lua
+│   ├── Containers/
+│   ├── Algorithms.lua
 │   ├── Class.lua
+│   ├── Enum.lua
+│   ├── Interface.lua
+│   ├── Iterator.lua
+│   ├── Math.lua
+│   ├── Namespace.lua
+│   ├── Optional.lua
+│   ├── Pair.lua
+│   ├── Reference.lua
+│   ├── Result.lua
+│   ├── Scope.lua
+│   ├── String.lua
 │   ├── Struct.lua
-│   └── Enum.lua
+│   ├── Tuple.lua
+│   ├── Type.lua
+│   └── init.lua
 ├── tests/
 │   ├── RunTests.server.lua
 │   └── specs/
@@ -91,44 +124,39 @@ CppLuau-Lib/
 ├── selene.toml
 ├── stylua.toml
 └── wally.toml
-```
+~~~
 
 ## Development
 
-Install the pinned tools with [Rokit](https://github.com/rojo-rbx/rokit):
+Install the pinned tools with Rokit:
 
-```sh
+~~~sh
 rokit install
 wally install
-```
+~~~
 
 Check formatting and lint the source:
 
-```sh
+~~~sh
 stylua --check src tests examples
 selene src
-```
+~~~
 
-Build the library:
+Build the package and test place:
 
-```sh
+~~~sh
 rojo build default.project.json -o CppLuauLib.rbxm
-```
-
-Build the TestEZ test place:
-
-```sh
 rojo build test.project.json -o CppLuauLib-Tests.rbxlx
-```
+~~~
 
-Open the test place in Roblox Studio and press **Play**. The server runner executes the specs under `tests/specs`.
+Open the test place in Roblox Studio and press **Play** to execute TestEZ specs under tests/specs.
 
-## Design
+## Design principles
 
-The code uses strict Luau typing and direct metatable-based objects. Its implementation style is inspired by the compact, type-first organization of [LocalOneX/MockSignal](https://github.com/LocalOneX/MockSignal). The repository layout follows common Roblox library conventions: a clear source entry point, isolated tests, examples, documentation, package metadata, and automated checks.
+- Strict Luau types and direct metatable-driven objects.
+- Small modules with focused responsibilities.
+- Predictable APIs and explicit edge-case behavior.
+- Tests and documentation alongside public features.
+- No fake manual-memory management: Luau uses garbage collection.
 
-This project borrows organizational patterns, not other libraries' implementations.
-
-## License
-
-No license has been selected for this repository yet. Add a license before redistributing or accepting external contributions under open-source terms.
+Source formatting is inspired by the type-first, compact style of [LocalOneX/MockSignal](https://github.com/LocalOneX/MockSignal). Repository organization follows common Roblox package conventions. Implementations are original.
