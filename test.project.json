@@ -10,8 +10,8 @@
 			"Tests": {
 				"$path": "tests/specs"
 			},
-			"Packages": {
-				"$path": "Packages"
+			"DevPackages": {
+				"$path": "DevPackages"
 			}
 		},
 		"ServerScriptService": {

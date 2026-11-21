@@ -1,9 +1,9 @@
 --!strict
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Packages = ReplicatedStorage:WaitForChild("Packages")
+local DevPackages = ReplicatedStorage:WaitForChild("DevPackages")
 local Tests = ReplicatedStorage:WaitForChild("Tests")
-local TestEZ = require(Packages:WaitForChild("TestEZ") :: ModuleScript)
+local TestEZ = require(DevPackages:WaitForChild("TestEZ") :: ModuleScript)
 
 local results = TestEZ.TestBootstrap:run({
 	Tests,
