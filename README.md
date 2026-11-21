@@ -6,17 +6,47 @@ A Luau library bringing C++-inspired programming concepts into Roblox and Luau.
 
 This is **not C++ compiled inside Luau**. It implements familiar ideas with native Luau syntax, including class-like objects, structs, enums, interfaces, namespaces, casts, containers, and utilities.
 
+## Current modules
+
+- **Class** — class objects, instance creation, inheritance, constructor chaining, and `IsA`
+- **Struct** — schema-based data structures with defaults
+- **Enum** — named constant collections
+
 ## Planned modules
 
-- **Class** — class-like instances, constructors, and inheritance
-- **Struct** — schema-backed data objects
-- **Enum** — named constants
-- **Interface** — contract validation
-- **Namespace** — organized members
+- **Interface** — contract and method validation
+- **Namespace** — organized module-like scopes
 - **Cast** — explicit type conversion helpers
-- **Containers** — typed collection utilities
+- **Containers** — List, Stack, Queue, Map, Set
 
-Modules will be added incrementally, with typed APIs and small implementations.
+Modules are developed incrementally, with typed APIs and small implementations.
+
+## Class example
+
+```lua
+local Class = require(path.Class)
+
+local Entity = Class.new("Entity")
+	:Constructor(function(self, name)
+		self.Name = name
+	end)
+
+local Player = Entity:Extend("Player")
+	:Constructor(function(self, name, level)
+		self.Level = level
+	end)
+
+function Player:GetName()
+	return self.Name
+end
+
+local player = Player:Create("Alex", 10)
+print(player:GetName())
+print(player:IsA("Player")) -- true
+print(player:IsA("Entity")) -- true
+```
+
+Constructors run from base to derived. All constructors receive the same arguments; derived constructors can ignore arguments they don't need.
 
 ## Style
 
