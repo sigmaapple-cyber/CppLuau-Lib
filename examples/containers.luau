@@ -13,7 +13,9 @@ pending:Enqueue("Load")
 pending:Enqueue("Save")
 
 local uniqueIds = Containers.Set.new({ 10, 20, 10, 30 })
+local priorities = Containers.PriorityQueue.new({ 2, 5, 1 })
 
 print(scores:Size())
 print(pending:Dequeue())
 print(uniqueIds:Size())
+print(priorities:Pop())

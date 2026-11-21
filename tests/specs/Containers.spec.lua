@@ -5,6 +5,19 @@ local CppLuau = require(ReplicatedStorage:WaitForChild("CppLuauLib") :: ModuleSc
 local Containers = CppLuau.Containers
 
 return function()
+	describe("Array", function()
+		it("keeps a fixed size and supports indexed writes", function()
+			local array = Containers.Array.new(3, 0)
+
+			array:Set(2, 5)
+
+			expect(array:Size()).to.equal(3)
+			expect(array:Get(1)).to.equal(0)
+			expect(array:Get(2)).to.equal(5)
+			expect(array:Get(3)).to.equal(0)
+		end)
+	end)
+
 	describe("Vector", function()
 		it("supports indexed sequence operations", function()
 			local vector = Containers.Vector.new({ 1, 3 })
@@ -27,6 +40,40 @@ return function()
 			expect(function()
 				vector:Resize(5)
 			end).to.throw()
+		end)
+	end)
+
+	describe("Deque", function()
+		it("pushes and pops from both ends", function()
+			local deque = Containers.Deque.new({ 1, 2, 3 })
+
+			expect(deque:PopFront()).to.equal(1)
+			deque:PushFront(0):PushBack(4)
+
+			expect(deque:Front()).to.equal(0)
+			expect(deque:Back()).to.equal(4)
+			expect(deque:At(3)).to.equal(3)
+			expect(deque:PopBack()).to.equal(4)
+		end)
+
+		it("grows its circular buffer", function()
+			local deque = Containers.Deque.new()
+
+			for idx = 1, 20 do
+				deque:PushBack(idx)
+			end
+
+			for idx = 1, 10 do
+				expect(deque:PopFront()).to.equal(idx)
+			end
+
+			for idx = 21, 35 do
+				deque:PushBack(idx)
+			end
+
+			expect(deque:Size()).to.equal(25)
+			expect(deque:Front()).to.equal(11)
+			expect(deque:Back()).to.equal(35)
 		end)
 	end)
 
@@ -67,6 +114,28 @@ return function()
 
 			expect(queue:Size()).to.equal(1)
 			expect(queue:Dequeue()).to.equal(2)
+		end)
+	end)
+
+	describe("PriorityQueue", function()
+		it("returns the highest priority value", function()
+			local queue = Containers.PriorityQueue.new({ 3, 1, 5, 2 })
+
+			expect(queue:Top()).to.equal(5)
+			expect(queue:Pop()).to.equal(5)
+			expect(queue:Pop()).to.equal(3)
+			expect(queue:Pop()).to.equal(2)
+			expect(queue:Pop()).to.equal(1)
+			expect(queue:Empty()).to.equal(true)
+		end)
+
+		it("supports a custom comparator", function()
+			local queue = Containers.PriorityQueue.new({ 3, 1, 5 }, function(a, b)
+				return a < b
+			end)
+
+			expect(queue:Top()).to.equal(1)
+			expect(queue:Pop()).to.equal(1)
 		end)
 	end)
 

@@ -26,15 +26,19 @@ This is **not** a C++ compiler or transpiler. It uses Luau tables, functions, me
 | [Result](docs/Values.md#result) | Success or error values with mapping and chaining. |
 | [Pair](docs/Values.md#pair) | A pair of related values. |
 | [Tuple](docs/Values.md#tuple) | Fixed-length values that preserve nil positions. |
+| [Variant](docs/Values.md#variant) | Tagged value with runtime dispatch. |
 | [Reference](docs/Values.md#reference) | A shared mutable value box. |
 
 ### Containers
 
 | Module | Purpose |
 | --- | --- |
+| Containers.Array | Fixed-size indexed sequence. |
 | Containers.Vector | Resizable indexed sequence. |
+| Containers.Deque | Double-ended queue using a circular buffer. |
 | Containers.Stack | Last-in, first-out container. |
 | Containers.Queue | First-in, first-out container. |
+| Containers.PriorityQueue | Binary heap with custom priority comparison. |
 | Containers.Map | Key-value collection. |
 | Containers.Set | Unique-value collection and set operations. |
 
@@ -45,11 +49,14 @@ See [Containers](docs/Containers.md) for the complete API.
 | Module | Purpose |
 | --- | --- |
 | [Algorithms](docs/Algorithms.md) | Find, filter, map, reduce, sort, reverse, unique, and predicates. |
+| [Numeric](docs/Algorithms.md#numeric) | Accumulate, Iota, GCD, LCM, and inner product. |
 | [Iterator](docs/ContractsAndScopes.md#iterator) | Numeric ranges, enumerate, zip, and reverse iteration. |
 | [Scope](docs/ContractsAndScopes.md#scope) | Reverse-order deferred cleanup. |
 | [String](docs/Utilities.md#string) | Plain string operations and transformations. |
+| [StringBuilder](docs/Utilities.md#stringbuilder) | Efficiently builds strings from parts. |
 | [Math](docs/Utilities.md#math) | Numeric helpers, interpolation, wrapping, and factorial. |
 | [Type](docs/Utilities.md#type) | Runtime type and value inspection. |
+| [Functional](docs/Utilities.md#functional) | Compose, pipe, bind, and once-only callbacks. |
 
 ## Quick start
 
@@ -98,19 +105,23 @@ CppLuau-Lib/
 │   ├── Algorithms.lua
 │   ├── Class.lua
 │   ├── Enum.lua
+│   ├── Functional.lua
 │   ├── Interface.lua
 │   ├── Iterator.lua
 │   ├── Math.lua
 │   ├── Namespace.lua
+│   ├── Numeric.lua
 │   ├── Optional.lua
 │   ├── Pair.lua
 │   ├── Reference.lua
 │   ├── Result.lua
 │   ├── Scope.lua
 │   ├── String.lua
+│   ├── StringBuilder.lua
 │   ├── Struct.lua
 │   ├── Tuple.lua
 │   ├── Type.lua
+│   ├── Variant.lua
 │   └── init.lua
 ├── tests/
 │   ├── RunTests.server.lua

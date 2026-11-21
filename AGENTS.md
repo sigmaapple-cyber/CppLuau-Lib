@@ -7,11 +7,12 @@ A Luau standard-library-inspired toolkit implementing C++-style programming conc
 - src/init.lua: public package entry point.
 - src/Class.lua, Struct.lua, Enum.lua: core object and value concepts.
 - src/Interface.lua, Namespace.lua: contracts and named scopes.
-- src/Optional.lua, Result.lua, Pair.lua, Tuple.lua, Reference.lua: value wrappers.
-- src/Containers: Vector, Stack, Queue, Map, and Set.
-- src/Algorithms.lua, Iterator.lua: array algorithms and iterators.
+- src/Optional.lua, Result.lua, Pair.lua, Tuple.lua, Variant.lua, Reference.lua: value wrappers.
+- src/Containers: Array, Vector, Deque, Stack, Queue, PriorityQueue, Map, and Set.
+- src/Algorithms.lua, Numeric.lua, Iterator.lua: algorithms and iteration helpers.
+- src/Functional.lua: function composition and adaptation.
 - src/Scope.lua: explicit deferred cleanup.
-- src/String.lua, Math.lua, Type.lua: runtime utilities.
+- src/String.lua, StringBuilder.lua, Math.lua, Type.lua: runtime utilities.
 - tests/specs: TestEZ behavior tests.
 - tests/RunTests.server.lua: Studio test runner.
 - docs: public API guides.
