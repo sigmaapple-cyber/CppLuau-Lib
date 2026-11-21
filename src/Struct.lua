@@ -18,10 +18,7 @@ type ProtoSchema = {
 	HasField: (self: StructObject, name: string) -> boolean,
 }
 
-export type StructObject = typeof(setmetatable(
-	{} :: RawStructObject,
-	{ __index = {} :: ProtoSchema }
-))
+export type StructObject = typeof(setmetatable({} :: RawStructObject, { __index = {} :: ProtoSchema }))
 
 local module = {}
 
@@ -68,12 +65,15 @@ module.new = function(name: string, schema: { [string]: any })
 		raw[field] = clone(value, copies)
 	end
 
-	return (setmetatable(
-		{
-			Name = name;
-			Schema = table.freeze(raw);
-		} :: RawStructObject, { __index = module }
-	)) :: StructObject
+	return (
+		setmetatable(
+			{
+				Name = name,
+				Schema = table.freeze(raw),
+			} :: RawStructObject,
+			{ __index = module }
+		)
+	) :: StructObject
 end
 
 --[[

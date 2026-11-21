@@ -22,10 +22,9 @@ return function()
 				return self.Name
 			end
 
-			local Player = Entity:Extend("Player")
-				:Constructor(function(self, name)
-					self.Name = name
-				end)
+			local Player = Entity:Extend("Player"):Constructor(function(self, name)
+				self.Name = name
+			end)
 
 			local player = Player:Create("Alex")
 
@@ -49,20 +48,17 @@ return function()
 		end)
 
 		it("runs constructors from base to derived", function()
-			local Entity = Class.new("Entity")
-				:Constructor(function(self)
-					self.Order = { "Entity" }
-				end)
+			local Entity = Class.new("Entity"):Constructor(function(self)
+				self.Order = { "Entity" }
+			end)
 
-			local Player = Entity:Extend("Player")
-				:Constructor(function(self)
-					table.insert(self.Order, "Player")
-				end)
+			local Player = Entity:Extend("Player"):Constructor(function(self)
+				table.insert(self.Order, "Player")
+			end)
 
-			local Admin = Player:Extend("Admin")
-				:Constructor(function(self)
-					table.insert(self.Order, "Admin")
-				end)
+			local Admin = Player:Extend("Admin"):Constructor(function(self)
+				table.insert(self.Order, "Admin")
+			end)
 
 			local admin = Admin:Create()
 
@@ -70,15 +66,13 @@ return function()
 		end)
 
 		it("passes the same arguments to every constructor", function()
-			local Entity = Class.new("Entity")
-				:Constructor(function(self, name)
-					self.Name = name
-				end)
+			local Entity = Class.new("Entity"):Constructor(function(self, name)
+				self.Name = name
+			end)
 
-			local Player = Entity:Extend("Player")
-				:Constructor(function(self, name, level)
-					self.Level = level
-				end)
+			local Player = Entity:Extend("Player"):Constructor(function(self, name, level)
+				self.Level = level
+			end)
 
 			local player = Player:Create("Alex", 10)
 

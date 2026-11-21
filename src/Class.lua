@@ -36,15 +36,9 @@ type InstanceProtoSchema = {
 	[string]: any,
 }
 
-export type ClassObject = typeof(setmetatable(
-	{} :: RawClassObject,
-	{ __index = {} :: ClassProtoSchema }
-))
+export type ClassObject = typeof(setmetatable({} :: RawClassObject, { __index = {} :: ClassProtoSchema }))
 
-export type InstanceObject = typeof(setmetatable(
-	{} :: RawInstanceObject,
-	{ __index = {} :: InstanceProtoSchema }
-))
+export type InstanceObject = typeof(setmetatable({} :: RawInstanceObject, { __index = {} :: InstanceProtoSchema }))
 
 local module = {}
 
@@ -53,29 +47,28 @@ local module = {}
 ]]
 module.new = function(name: string, base: ClassObject?)
 	assert(type(name) == "string" and name:match("%S") ~= nil, "Class name cannot be empty")
-	assert(
-		base == nil or (type(base) == "table" and rawget(base, "_Class") == true),
-		"Base must be a CppLuau class"
-	)
+	assert(base == nil or (type(base) == "table" and rawget(base, "_Class") == true), "Base must be a CppLuau class")
 
 	local raw = {
-		_Class = true;
-		Name = name;
-		Base = base;
-		_Constructor = nil;
+		_Class = true,
+		Name = name,
+		Base = base,
+		_Constructor = nil,
 	} :: RawClassObject
 
-	return (setmetatable(raw, {
-		__index = function(self, key)
-			local value = (module :: any)[key]
-			if value ~= nil then
-				return value
-			end
+	return (
+		setmetatable(raw, {
+			__index = function(self, key)
+				local value = (module :: any)[key]
+				if value ~= nil then
+					return value
+				end
 
-			local parent = rawget(self, "Base")
-			return parent and parent[key]
-		end,
-	})) :: ClassObject
+				local parent = rawget(self, "Base")
+				return parent and parent[key]
+			end,
+		})
+	) :: ClassObject
 end
 
 --[[
@@ -83,7 +76,7 @@ end
 ]]
 module.Create = function(self: ClassObject, ...)
 	local raw = {
-		_class = self;
+		_class = self,
 	} :: RawInstanceObject
 
 	local object = setmetatable(raw, {

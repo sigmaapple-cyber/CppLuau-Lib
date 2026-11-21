@@ -14,10 +14,7 @@ type ProtoSchema = {
 	Has: (self: EnumObject, name: string) -> boolean,
 }
 
-export type EnumObject = typeof(setmetatable(
-	{} :: RawEnumObject,
-	{ __index = {} :: ProtoSchema }
-))
+export type EnumObject = typeof(setmetatable({} :: RawEnumObject, { __index = {} :: ProtoSchema }))
 
 local module = {}
 
@@ -46,12 +43,15 @@ module.new = function(name: string, values: { [any]: any })
 
 	assert(next(raw) ~= nil, "Enum must contain at least one value")
 
-	return (setmetatable(
-		{
-			Name = name;
-			Values = table.freeze(raw);
-		} :: RawEnumObject, { __index = module }
-	)) :: EnumObject
+	return (
+		setmetatable(
+			{
+				Name = name,
+				Values = table.freeze(raw),
+			} :: RawEnumObject,
+			{ __index = module }
+		)
+	) :: EnumObject
 end
 
 --[[
