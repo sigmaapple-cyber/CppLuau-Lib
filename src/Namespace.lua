@@ -113,13 +113,7 @@ end
 	Returns a frozen shallow copy of the namespace values.
 ]]
 module.Export = function(self: NamespaceObject)
-	local raw = {}
-
-	for name, value in self.Values do
-		raw[name] = value
-	end
-
-	return table.freeze(raw)
+	return table.freeze(table.clone(self.Values))
 end
 
 return module
