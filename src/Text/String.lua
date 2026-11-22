@@ -1,41 +1,26 @@
 --!strict
 --[[
-	String utilities using Luau's byte-oriented string library.
+	Plain string operations.
 ]]
 
 local module = {}
 
---[[
-	Removes whitespace from both ends of a string.
-]]
 module.Trim = function(value: string): string
 	return (string.gsub(value, "^%s*(.-)%s*$", "%1"))
 end
 
---[[
-	Checks whether a string begins with a prefix.
-]]
 module.StartsWith = function(value: string, prefix: string): boolean
 	return string.sub(value, 1, #prefix) == prefix
 end
 
---[[
-	Checks whether a string ends with a suffix.
-]]
 module.EndsWith = function(value: string, suffix: string): boolean
 	return suffix == "" or string.sub(value, -#suffix) == suffix
 end
 
---[[
-	Checks whether a string contains a plain substring.
-]]
 module.Contains = function(value: string, target: string): boolean
 	return string.find(value, target, 1, true) ~= nil
 end
 
---[[
-	Splits a string by a plain separator and preserves empty entries.
-]]
 module.Split = function(value: string, separator: string): { string }
 	assert(separator ~= "", "String separator cannot be empty")
 
@@ -56,16 +41,10 @@ module.Split = function(value: string, separator: string): { string }
 	return raw
 end
 
---[[
-	Joins a list of strings using a separator.
-]]
 module.Join = function(values: { string }, separator: string?): string
 	return table.concat(values, separator or "")
 end
 
---[[
-	Replaces every occurrence of a plain substring.
-]]
 module.Replace = function(value: string, search: string, replacement: string): string
 	assert(search ~= "", "String search cannot be empty")
 
@@ -87,24 +66,15 @@ module.Replace = function(value: string, search: string, replacement: string): s
 	return table.concat(raw)
 end
 
---[[
-	Repeats a string a number of times.
-]]
 module.Repeat = function(value: string, count: number): string
 	assert(count % 1 == 0 and count >= 0, "String repeat count must be a non-negative integer")
 	return string.rep(value, count)
 end
 
---[[
-	Reverses a string by bytes.
-]]
 module.Reverse = function(value: string): string
 	return string.reverse(value)
 end
 
---[[
-	Counts plain occurrences of a substring.
-]]
 module.Count = function(value: string, target: string): number
 	assert(target ~= "", "String target cannot be empty")
 
@@ -122,6 +92,18 @@ module.Count = function(value: string, target: string): number
 	end
 
 	return count
+end
+
+module.Lower = function(value: string): string
+	return string.lower(value)
+end
+
+module.Upper = function(value: string): string
+	return string.upper(value)
+end
+
+module.ByteLength = function(value: string): number
+	return #value
 end
 
 return table.freeze(module)

@@ -1,49 +1,28 @@
 # Enum
 
-The `Enum` module creates named collections of constant values. It accepts either a list or a name-to-value dictionary.
+Public module: `CppLuau.Core.Enum`.
 
-## Create an enum from a list
+Enum creates named collections of constants from a list or name-to-value dictionary.
 
-```lua
+~~~lua
+local Enum = CppLuau.Core.Enum
+
 local State = Enum.new("State", {
 	"Idle",
 	"Running",
 	"Finished",
 })
 
-print(State:Get("Idle")) -- 1
-print(State:Get("Finished")) -- 3
-```
+print(State:Get("Idle"))
+print(State:Get("Finished"))
+~~~
 
-List entries receive their one-based numeric positions.
-
-## Create an enum from a dictionary
-
-```lua
-local ErrorCode = Enum.new("ErrorCode", {
-	None = 0,
-	NotFound = 404,
-	Denied = 403,
-})
-
-print(ErrorCode:Get("NotFound")) -- 404
-```
+List values receive one-based numeric values. Dictionary values are retained.
 
 ## API
 
-### `Enum.new(name, values)`
+- `Enum.new(name, values)` creates an enum.
+- `:Get(name)` returns a value or nil.
+- `:Has(name)` checks for a name.
 
-Creates an enum from a list or dictionary. Names must be non-empty strings. List entries must be non-empty strings, and duplicate names are rejected.
-
-### `enum:Get(name)`
-
-Returns the value associated with a name, or `nil` when the name does not exist.
-
-### `enum:Has(name)`
-
-Returns whether the enum contains the requested name.
-
-## Notes
-
-- The enum's value table is frozen after creation.
-- Enum values are not Roblox `EnumItem` values.
+Names must be non-empty and duplicate names are rejected. The values table is frozen. These values are not Roblox EnumItems.

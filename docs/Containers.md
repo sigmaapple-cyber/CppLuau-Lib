@@ -1,109 +1,139 @@
 # Containers
 
-The Containers module exports sequence and associative containers. All containers are table-backed Luau objects; they do not provide C++ iterator invalidation guarantees or compile-time element types.
+All collection indexes are one-based, except buffer and bit offsets which are documented separately. Containers store non-nil values; use `Values.Optional` or a separate presence flag when nil itself must be represented.
 
-~~~lua
-local Containers = CppLuau.Containers
+## Sequence containers
 
-local values = Containers.Vector.new({ 10, 20 })
-values:PushBack(30)
-print(values:At(2)) -- 20
+### Array
 
-local queue = Containers.Queue.new()
-queue:Enqueue("first"):Enqueue("second")
-print(queue:Dequeue()) -- first
+Fixed-size indexed storage.
 
-local unique = Containers.Set.new({ "a", "b", "a" })
-print(unique:Size()) -- 2
-~~~
+- `Array.new(size, fill)`
+- `:Get(index)`, `:Set(index, value)`
+- `:Fill(value)`
+- `:Size()`, `:ToArray()`, `:ForEach(callback)`
 
-## Array
+### Vector
 
-A fixed-size, one-based sequence.
+Resizable array.
 
-- Array.new(size, fill)
-- :Get(index), :Set(index, value)
-- :Fill(value)
-- :Size(), :ToArray(), :ForEach(callback)
+- `Vector.new(values?)`
+- `:PushBack(value)`, `:PopBack()`
+- `:At(index)`, `:Set(index, value)`
+- `:Insert(index, value)`, `:Erase(index)`
+- `:Front()`, `:Back()`
+- `:Resize(size, fill?)`
+- `:Size()`, `:Empty()`, `:Clear()`, `:ToArray()`
 
-An array requires an explicit fill value when its size is non-zero. Its size never changes.
+Growing a vector requires a non-nil fill value.
 
-## Vector
+### Deque
 
-A resizable, one-based sequence.
+Double-ended circular buffer.
 
-- Vector.new(values?)
-- :PushBack(value), :PopBack()
-- :At(index), :Set(index, value)
-- :Insert(index, value), :Erase(index)
-- :Front(), :Back()
-- :Size(), :Empty(), :Clear()
-- :Resize(size, fill?)
-- :ToArray(), :ForEach(callback)
+- `Deque.new(values?)`
+- `:PushFront(value)`, `:PushBack(value)`
+- `:PopFront()`, `:PopBack()`
+- `:Front()`, `:Back()`, `:At(index)`
+- `:Size()`, `:Empty()`, `:Clear()`, `:ToArray()`
 
-Growing with Resize requires a non-nil fill value because Luau arrays cannot contain nil entries.
+### List
 
-## Deque
+Doubly linked list.
 
-A double-ended queue backed by a circular buffer.
+- `List.new(values?)`
+- `:PushFront(value)`, `:PushBack(value)`
+- `:PopFront()`, `:PopBack()`
+- `:At(index)`, `:Insert(index, value)`, `:Erase(index)`
+- `:Find(value)`, `:Remove(value)`
+- `:Front()`, `:Back()`, `:Size()`, `:Empty()`, `:Clear()`, `:ToArray()`
 
-- Deque.new(values?)
-- :PushFront(value), :PushBack(value)
-- :PopFront(), :PopBack()
-- :Front(), :Back(), :At(index)
-- :Size(), :Empty(), :Clear(), :ToArray()
+### ForwardList
 
-Push and pop operations at either end avoid shifting all remaining values.
+Singly linked list.
 
-## Stack
+- `ForwardList.new(values?)`
+- `:PushFront(value)`, `:PushBack(value)`, `:PopFront()`
+- `:InsertAfter(index, value)`, `:EraseAfter(index)`
+- `:Find(value)`, `:Remove(value)`
+- `:Front()`, `:Back()`, `:Size()`, `:Empty()`, `:Clear()`, `:ToArray()`
 
-A last-in, first-out sequence.
+Index zero is the position before the first node for the `After` methods.
 
-- Stack.new(values?)
-- :Push(value), :Pop(), :Top()
-- :Size(), :Empty(), :Clear(), :ToArray()
+## Adaptors
 
-The last input value is the top of a stack created from an array.
+### Stack
 
-## Queue
+Last-in, first-out.
 
-A first-in, first-out sequence. Dequeue advances a head index instead of shifting the remaining array on every removal.
+- `Stack.new(values?)`
+- `:Push(value)`, `:Pop()`, `:Top()`
+- `:Size()`, `:Empty()`, `:Clear()`, `:ToArray()`
 
-- Queue.new(values?)
-- :Enqueue(value), :Dequeue()
-- :Front(), :Back()
-- :Size(), :Empty(), :Clear(), :ToArray()
+### Queue
 
-## PriorityQueue
+First-in, first-out.
 
-A binary heap which returns the highest-priority value first.
+- `Queue.new(values?)`
+- `:Enqueue(value)`, `:Dequeue()`
+- `:Front()`, `:Back()`
+- `:Size()`, `:Empty()`, `:Clear()`, `:ToArray()`
 
-- PriorityQueue.new(values?, compare?)
-- :Push(value), :Pop(), :Top()
-- :Size(), :Empty(), :Clear(), :ToArray()
+### PriorityQueue
 
-The default comparator creates a max-heap. Supply a comparator returning true when the first value has higher priority than the second to customize ordering. To create a min-heap, use a less-than comparator.
+Binary heap. The default comparator creates a max-heap.
 
-## Map
+- `PriorityQueue.new(values?, compare?)`
+- `:Push(value)`, `:Pop()`, `:Top()`
+- `:Size()`, `:Empty()`, `:Clear()`, `:ToArray()`
 
-A key-value collection. Keys and values cannot be nil; false is a valid value.
+The comparator returns true when its first argument has higher priority. A less-than comparator creates a min-heap.
 
-- Map.new()
-- :Set(key, value), :Get(key), :Has(key)
-- :Remove(key)
-- :Size(), :Empty(), :Clear()
-- :Keys(), :Values(), :ForEach(callback)
+## Associative containers
 
-Map iteration order is unspecified.
+### HashMap
 
-## Set
+A Luau hash-table-backed key-value collection.
 
-A collection of unique values.
+- `HashMap.new()`
+- `:Set(key, value)`, `:Get(key)`, `:Has(key)`, `:Remove(key)`
+- `:Size()`, `:Empty()`, `:Clear()`
+- `:Keys()`, `:Values()`, `:ForEach(callback)`
 
-- Set.new(values?)
-- :Add(value), :Remove(value), :Contains(value)
-- :Size(), :Empty(), :Clear(), :ToArray()
-- :Union(other), :Intersection(other), :Difference(other)
-- :IsSubsetOf(other)
+Keys and values cannot be nil. False is a valid value. Iteration order is unspecified.
+
+### HashSet
+
+A Luau hash-table-backed unique-value collection.
+
+- `HashSet.new(values?)`
+- `:Add(value)`, `:Remove(value)`, `:Contains(value)`
+- `:Union(other)`, `:Intersection(other)`, `:Difference(other)`
+- `:IsSubsetOf(other)`
+- `:Size()`, `:Empty()`, `:Clear()`, `:ToArray()`
 
 Set output order is unspecified.
+
+## Views and bit storage
+
+### Span
+
+Non-owning view over part of an array.
+
+- `Span.new(source, first?, count?)`
+- `:Get(index)`, `:Set(index, value)`
+- `:Subspan(first, count?)`
+- `:Size()`, `:Empty()`, `:ToArray()`, `:ForEach(callback)`
+
+A span writes through to its source array. It does not copy or own the source.
+
+### BitSet
+
+Fixed-size bit collection backed by 32-bit words.
+
+- `BitSet.new(size, fill?)`
+- `:Set(index, value?)`, `:Reset(index?)`, `:Flip(index?)`
+- `:Test(index)`, `:Count()`, `:Size()`
+- `:Any()`, `:None()`, `:All()`, `:ToArray()`
+
+Bit indexes are one-based.

@@ -1,66 +1,59 @@
 # CppLuau-Lib
 
-A Luau standard-library-inspired toolkit implementing C++-style programming concepts. This is not a C++ compiler, transpiler, or syntax replacement.
+A C++-inspired Luau library for Roblox. Its public API is organized into category namespaces under `src`.
 
-## Repository map
+## Public API map
 
-- src/init.lua: public package entry point.
-- src/Class.lua, Struct.lua, Enum.lua: core object and value concepts.
-- src/Interface.lua, Namespace.lua: contracts and named scopes.
-- src/Optional.lua, Result.lua, Pair.lua, Tuple.lua, Variant.lua, Reference.lua: value wrappers.
-- src/Containers: Array, Vector, Deque, Stack, Queue, PriorityQueue, Map, and Set.
-- src/Algorithms.lua, Numeric.lua, Iterator.lua: algorithms and iteration helpers.
-- src/Functional.lua: function composition and adaptation.
-- src/Scope.lua: explicit deferred cleanup.
-- src/String.lua, StringBuilder.lua, Math.lua, Type.lua: runtime utilities.
-- tests/specs: TestEZ behavior tests.
-- tests/RunTests.server.lua: Studio test runner.
-- docs: public API guides.
-- examples: runnable usage examples.
+- `Core`: Class, Struct, Enum, Interface, Namespace.
+- `Values`: Optional, Result, Pair, Tuple, Variant, Reference.
+- `Containers`: Array, Vector, Deque, List, ForwardList, Stack, Queue, PriorityQueue, HashMap, HashSet, Span, BitSet.
+- `Algorithms`: Sequence, Search, Sort.
+- `Math`: Scalar, Numeric, Random, Bit, Complex.
+- `Text`: String, StringBuilder, StringView, Format.
+- `Utility`: Functional, Iterator, TypeInfo, ScopeGuard.
+- `Time`: Clock, Duration, Timer.
+- `Binary`: Buffer.
+
+`src/init.lua` is the only public entry point. Category folders each expose an `init.lua`.
 
 ## Coding style
 
-Follow the Luau style shown in LocalOneX/MockSignal as closely as the feature allows.
+Follow the type-first, compact Luau style in LocalOneX/MockSignal as a reference.
 
-- Begin source files with --!strict.
+- Start source modules with `--!strict`.
 - Put raw object shapes, prototype schemas, and exported types near the top.
-- Prefer local module = {}, module.new = function(...), and module.Method = function(self: Type, ...).
-- Use metatables and __index directly for object behavior.
-- Keep method implementations small and data flow direct.
-- Use natural, contextual names such as raw, self, callback, class, and idx.
-- Use tabs, preserve readable spacing, and avoid unnecessary wrappers.
-- Use multiline method comments where they clarify public behavior; do not comment every line.
-- Use generics when they improve the public type contract.
-- Avoid unnecessary abstraction layers, artificial naming, excessive defensive code, and unrelated refactors.
+- Prefer `local module = {}`, `module.new = function(...)`, and `module.Method = function(self: Type, ...)`.
+- Use direct metatables and `__index` for object behavior.
+- Keep function bodies focused. Avoid framework layers around simple tables.
+- Use natural variable names such as `raw`, `self`, `callback`, `node`, and `idx`.
+- Tabs for indentation; run StyLua before committing.
+- Comments should describe public behavior or a non-obvious algorithm, not narrate each line.
+- Add generics where they describe a meaningful public contract.
 
-## API and compatibility
+## API rules
 
-- Keep public methods typed and document their arguments, return values, and behavior.
-- Preserve existing behavior unless a deliberate API change is documented.
-- Use consistent one-based indexes for array-like containers.
-- Document iteration order when it is unspecified.
-- Prefer explicit result and optional values over ambiguous sentinel values.
-- Luau uses garbage collection; do not claim that wrappers manually allocate or free memory.
-- Add TestEZ specs for new public behavior and regression cases.
-- Update README or the relevant guide when a public API changes.
+- Export new modules through their category `init.lua` and root `src/init.lua`.
+- Keep names precise. Use `HashMap` and `HashSet` for hash-table-backed collections.
+- Keep unrelated features out of an existing module.
+- Document indexing conventions, ordering, ownership, and complexity where relevant.
+- Luau has garbage collection. Do not claim pointers, destructors, or manual memory management.
+- Add TestEZ coverage and an API note for every new public module.
+- Update examples when public naming changes.
 
 ## Validation
-
-Run these commands before considering a change complete:
 
 ~~~sh
 stylua --check src tests examples
 selene src
 wally install
-rojo build default.project.json -o /tmp/CppLuauLib.rbxm
-rojo build test.project.json -o /tmp/CppLuauLib-Tests.rbxlx
+rojo build default.project.json -o /tmp/CppLuau.rbxm
+rojo build test.project.json -o /tmp/CppLuau-Tests.rbxlx
 ~~~
 
-Run the TestEZ place in Roblox Studio. Do not claim tests or builds passed unless they were actually run.
+The TestEZ place must also be run in Roblox Studio. Do not claim runtime tests passed unless they were executed.
 
 ## Repository rules
 
-- Do not copy other repositories' implementations or documentation verbatim.
-- Do not add placeholder modules just to make the file tree look larger.
-- Keep generated dependencies and build output out of commits.
-- Keep the package API focused; implement modules only when they have real behavior and tests.
+- Do not copy another repository's implementation.
+- Do not create empty placeholder modules.
+- Keep generated Wally packages and build outputs out of commits.

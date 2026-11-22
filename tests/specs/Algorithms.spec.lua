@@ -2,71 +2,65 @@
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local CppLuau = require(ReplicatedStorage:WaitForChild("CppLuauLib") :: ModuleScript)
-local Algorithms = CppLuau.Algorithms
+local Sequence = CppLuau.Algorithms.Sequence
 
 return function()
-	describe("Algorithms", function()
-		it("finds values and indexes", function()
+	describe("Algorithms.Sequence", function()
+		it("finds, filters, and maps values", function()
 			local values = { 2, 4, 6, 8 }
 
-			expect(Algorithms.Find(values, function(value)
+			expect(Sequence.Find(values, function(value)
 				return value > 4
 			end)).to.equal(6)
 
-			expect(Algorithms.FindIndex(values, function(value)
+			expect(Sequence.FindIndex(values, function(value)
 				return value == 8
 			end)).to.equal(4)
-		end)
 
-		it("filters and maps arrays", function()
-			local values = Algorithms.Filter({ 1, 2, 3, 4 }, function(value)
+			local doubled = Sequence.Map(Sequence.Filter(values, function(value)
 				return value % 2 == 0
-			end)
-
-			local doubled = Algorithms.Map(values, function(value)
+			end), function(value)
 				return value * 2
 			end)
 
-			expect(table.concat(doubled, ",")).to.equal("4,8")
+			expect(table.concat(doubled, ",")).to.equal("4,8,12,16")
 		end)
 
-		it("reduces values", function()
-			local total = Algorithms.Reduce({ 1, 2, 3, 4 }, function(sum, value)
+		it("reduces, checks predicates, and removes duplicates", function()
+			expect(Sequence.Reduce({ 1, 2, 3, 4 }, function(sum, value)
 				return sum + value
-			end, 0)
+			end, 0)).to.equal(10)
 
-			expect(total).to.equal(10)
-		end)
-
-		it("checks predicates", function()
-			expect(Algorithms.Any({ 1, 2, 3 }, function(value)
+			expect(Sequence.Any({ 1, 2, 3 }, function(value)
 				return value == 2
 			end)).to.equal(true)
 
-			expect(Algorithms.All({ 2, 4, 6 }, function(value)
+			expect(Sequence.All({ 2, 4, 6 }, function(value)
 				return value % 2 == 0
 			end)).to.equal(true)
 
-			expect(Algorithms.Count({ 1, 2, 2, 3 }, function(value)
-				return value == 2
-			end)).to.equal(2)
+			expect(table.concat(Sequence.Unique({ "a", "b", "a" }), ",")).to.equal("a,b")
 		end)
+	end)
 
-		it("returns sorted and reversed copies", function()
-			local values = { 3, 1, 2 }
-			local sorted = Algorithms.Sorted(values)
-			local reversed = Algorithms.Reversed(values)
+	describe("Algorithms.Search", function()
+		it("finds bounds in sorted data", function()
+			local values = { 1, 2, 2, 2, 4, 8 }
 
-			expect(table.concat(sorted, ",")).to.equal("1,2,3")
-			expect(table.concat(reversed, ",")).to.equal("2,1,3")
-			expect(values[1]).to.equal(3)
+			expect(CppLuau.Algorithms.Search.LowerBound(values, 2)).to.equal(2)
+			expect(CppLuau.Algorithms.Search.UpperBound(values, 2)).to.equal(5)
+			expect(CppLuau.Algorithms.Search.BinarySearch(values, 4)).to.equal(5)
+			expect(CppLuau.Algorithms.Search.Contains(values, 9)).to.equal(false)
 		end)
+	end)
 
-		it("removes duplicates while preserving order", function()
-			local values = Algorithms.Unique({ "a", "b", "a", "c", "b" })
+	describe("Algorithms.Sort", function()
+		it("sorts, stably sorts, and merges arrays", function()
+			local values = { 4, 1, 3, 2 }
 
-			expect(table.concat(values, ",")).to.equal("a,b,c")
-			expect(Algorithms.CountValue(values, "b")).to.equal(1)
+			expect(table.concat(CppLuau.Algorithms.Sort.StableSort(values), ",")).to.equal("1,2,3,4")
+			expect(table.concat(CppLuau.Algorithms.Sort.Merge({ 1, 3 }, { 2, 4 }), ",")).to.equal("1,2,3,4")
+			expect(CppLuau.Algorithms.Sort.IsSorted(values)).to.equal(false)
 		end)
 	end)
 end

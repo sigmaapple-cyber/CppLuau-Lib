@@ -1,173 +1,176 @@
 # CppLuau-Lib
 
-A Luau standard-library-inspired toolkit for Roblox. It brings C++-style programming concepts into native Luau: classes, contracts, value wrappers, containers, algorithms, iterators, and utilities.
+C++-inspired library modules implemented in Luau for Roblox. The project focuses on familiar programming building blocks: object models, value types, containers, algorithms, text processing, binary data, mathematics, and time utilities.
 
-This is **not** a C++ compiler or transpiler. It uses Luau tables, functions, metatables, and the Roblox runtime.
+It is a Luau library. It does not compile or execute C++.
 
-> **Status:** Early development. APIs may change before the first stable release.
+## Install
 
-## Modules
+Build the model with Rojo:
 
-### Core concepts
+~~~sh
+rojo build default.project.json -o CppLuau.rbxm
+~~~
+
+Place the model in ReplicatedStorage, then require its entry point:
+
+~~~lua
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local CppLuau = require(ReplicatedStorage:WaitForChild("CppLuauLib"))
+~~~
+
+## API layout
+
+The public API is grouped by responsibility. There are no flat duplicate exports.
+
+### Core
 
 | Module | Purpose |
 | --- | --- |
-| [Class](docs/Class.md) | Class objects, inheritance, constructor chaining, and IsA. |
-| [Struct](docs/Struct.md) | Schema-based values with copied defaults. |
-| [Enum](docs/Enum.md) | Named constant collections. |
-| [Interface](docs/ContractsAndScopes.md#interface) | Runtime method contracts. |
-| [Namespace](docs/ContractsAndScopes.md#namespace) | Named, nestable scopes for related values. |
+| `Core.Class` | Classes, single inheritance, and constructor chaining |
+| `Core.Struct` | Schema-based values |
+| `Core.Enum` | Named constants |
+| `Core.Interface` | Runtime method contracts |
+| `Core.Namespace` | Nested named scopes |
 
-### Value types
+### Values
 
 | Module | Purpose |
 | --- | --- |
-| [Optional](docs/Values.md#optional) | A present value or an empty value. |
-| [Result](docs/Values.md#result) | Success or error values with mapping and chaining. |
-| [Pair](docs/Values.md#pair) | A pair of related values. |
-| [Tuple](docs/Values.md#tuple) | Fixed-length values that preserve nil positions. |
-| [Variant](docs/Values.md#variant) | Tagged value with runtime dispatch. |
-| [Reference](docs/Values.md#reference) | A shared mutable value box. |
+| `Values.Optional` | Present or absent value |
+| `Values.Result` | Success or error result |
+| `Values.Pair` | Pair of values |
+| `Values.Tuple` | Fixed argument/value sequence |
+| `Values.Variant` | Tagged alternative |
+| `Values.Reference` | Shared mutable value |
 
 ### Containers
 
 | Module | Purpose |
 | --- | --- |
-| Containers.Array | Fixed-size indexed sequence. |
-| Containers.Vector | Resizable indexed sequence. |
-| Containers.Deque | Double-ended queue using a circular buffer. |
-| Containers.Stack | Last-in, first-out container. |
-| Containers.Queue | First-in, first-out container. |
-| Containers.PriorityQueue | Binary heap with custom priority comparison. |
-| Containers.Map | Key-value collection. |
-| Containers.Set | Unique-value collection and set operations. |
+| `Containers.Array` | Fixed-size sequence |
+| `Containers.Vector` | Resizable sequence |
+| `Containers.Deque` | Double-ended circular buffer |
+| `Containers.List` | Doubly linked list |
+| `Containers.ForwardList` | Singly linked list |
+| `Containers.Stack` | Last-in, first-out |
+| `Containers.Queue` | First-in, first-out |
+| `Containers.PriorityQueue` | Binary heap |
+| `Containers.HashMap` | Hash-table-backed key-value collection |
+| `Containers.HashSet` | Hash-table-backed unique values |
+| `Containers.Span` | Non-owning array view |
+| `Containers.BitSet` | Fixed-size bit collection |
 
-See [Containers](docs/Containers.md) for the complete API.
-
-### Algorithms and utilities
+### Algorithms
 
 | Module | Purpose |
 | --- | --- |
-| [Algorithms](docs/Algorithms.md) | Find, filter, map, reduce, sort, reverse, unique, and predicates. |
-| [Numeric](docs/Algorithms.md#numeric) | Accumulate, Iota, GCD, LCM, and inner product. |
-| [Iterator](docs/ContractsAndScopes.md#iterator) | Numeric ranges, enumerate, zip, and reverse iteration. |
-| [Scope](docs/ContractsAndScopes.md#scope) | Reverse-order deferred cleanup. |
-| [String](docs/Utilities.md#string) | Plain string operations and transformations. |
-| [StringBuilder](docs/Utilities.md#stringbuilder) | Efficiently builds strings from parts. |
-| [Math](docs/Utilities.md#math) | Numeric helpers, interpolation, wrapping, and factorial. |
-| [Type](docs/Utilities.md#type) | Runtime type and value inspection. |
-| [Functional](docs/Utilities.md#functional) | Compose, pipe, bind, and once-only callbacks. |
+| `Algorithms.Sequence` | Find, map, filter, reduce, predicates, unique |
+| `Algorithms.Search` | Binary search, lower and upper bounds |
+| `Algorithms.Sort` | Sort, stable sort, merge, sorted check |
 
-## Quick start
+### Math
 
-Build the library as a Roblox model with Rojo:
+| Module | Purpose |
+| --- | --- |
+| `Math.Scalar` | Scalar operations and statistics |
+| `Math.Numeric` | Accumulation, sequences, GCD, LCM |
+| `Math.Random` | Seeded xorshift32 generator |
+| `Math.Bit` | 32-bit bitwise operations |
+| `Math.Complex` | Complex number arithmetic |
 
-~~~sh
-rojo build default.project.json -o CppLuauLib.rbxm
-~~~
+### Text
 
-Require the package's public entry point:
+| Module | Purpose |
+| --- | --- |
+| `Text.String` | Plain string operations |
+| `Text.StringBuilder` | Build strings from appended parts |
+| `Text.StringView` | Non-owning string slice |
+| `Text.Format` | Positional templates and padding |
 
-~~~lua
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local CppLuau = require(ReplicatedStorage:WaitForChild("CppLuauLib"))
+### Utility
 
-local Class = CppLuau.Class
-local Containers = CppLuau.Containers
-local Optional = CppLuau.Optional
-~~~
+| Module | Purpose |
+| --- | --- |
+| `Utility.Functional` | Compose, pipe, bind, once |
+| `Utility.Iterator` | Range, enumerate, zip, reverse |
+| `Utility.TypeInfo` | Runtime type inspection |
+| `Utility.ScopeGuard` | Reverse-order cleanup callbacks |
+
+### Time and binary data
+
+| Module | Purpose |
+| --- | --- |
+| `Time.Clock` | Monotonic and Unix clock helpers |
+| `Time.Duration` | Duration arithmetic and conversion |
+| `Time.Timer` | Accumulated elapsed-time timer |
+| `Binary.Buffer` | Growable byte buffer and primitive reads/writes |
 
 ## Example
 
 ~~~lua
-local Queue = CppLuau.Containers.Queue
-local Optional = CppLuau.Optional
+local Containers = CppLuau.Containers
+local Random = CppLuau.Math.Random
+local Search = CppLuau.Algorithms.Search
 
-local tasks = Queue.new()
-tasks:Enqueue("Load")
-tasks:Enqueue("Save")
+local values = Containers.Vector.new({ 8, 2, 5, 1 })
+local sorted = CppLuau.Algorithms.Sort.StableSort(values:ToArray())
 
-local nextTask = Optional.Some(tasks:Dequeue())
-print(nextTask:Unwrap()) -- Load
+local random = Random.new(1234)
+local picked = sorted[random:NextInteger(1, #sorted)]
+
+print(Search.BinarySearch(sorted, picked))
 ~~~
 
-A larger example is available in [examples/containers.luau](examples/containers.luau).
+More examples are in [examples](examples/).
 
-## Repository layout
+## Repository
 
 ~~~text
-CppLuau-Lib/
-├── .github/
-├── docs/
-├── examples/
-├── src/
-│   ├── Containers/
-│   ├── Algorithms.lua
-│   ├── Class.lua
-│   ├── Enum.lua
-│   ├── Functional.lua
-│   ├── Interface.lua
-│   ├── Iterator.lua
-│   ├── Math.lua
-│   ├── Namespace.lua
-│   ├── Numeric.lua
-│   ├── Optional.lua
-│   ├── Pair.lua
-│   ├── Reference.lua
-│   ├── Result.lua
-│   ├── Scope.lua
-│   ├── String.lua
-│   ├── StringBuilder.lua
-│   ├── Struct.lua
-│   ├── Tuple.lua
-│   ├── Type.lua
-│   ├── Variant.lua
-│   └── init.lua
-├── tests/
-│   ├── RunTests.server.lua
-│   └── specs/
-├── AGENTS.md
-├── CHANGELOG.md
-├── CONTRIBUTING.md
-├── default.project.json
-├── test.project.json
-├── rokit.toml
-├── selene.toml
-├── stylua.toml
-└── wally.toml
+src/
+├── Core/
+├── Values/
+├── Containers/
+├── Algorithms/
+├── Math/
+├── Text/
+├── Utility/
+├── Time/
+├── Binary/
+└── init.lua
+tests/
+├── RunTests.server.lua
+└── specs/
+docs/
+examples/
 ~~~
 
 ## Development
 
-Install the pinned tools with Rokit:
+Install tools and dependencies:
 
 ~~~sh
 rokit install
 wally install
 ~~~
 
-Check formatting and lint the source:
+Run formatting, linting, and builds:
 
 ~~~sh
 stylua --check src tests examples
 selene src
+rojo build default.project.json -o CppLuau.rbxm
+rojo build test.project.json -o CppLuau-Tests.rbxlx
 ~~~
 
-Build the package and test place:
+Open the test place in Roblox Studio and press **Play** to run the TestEZ specifications.
 
-~~~sh
-rojo build default.project.json -o CppLuauLib.rbxm
-rojo build test.project.json -o CppLuauLib-Tests.rbxlx
-~~~
+## Design
 
-Open the test place in Roblox Studio and press **Play** to execute TestEZ specs under tests/specs.
+- Strict Luau types for public object shapes and APIs.
+- Category folders with one public entry point per category.
+- Data structures implemented for the operations they expose.
+- Tests and API notes live alongside the source.
+- No claims of C++ ABI, template instantiation, pointers, or manual memory management. Luau has its own runtime and garbage collector.
 
-## Design principles
-
-- Strict Luau types and direct metatable-driven objects.
-- Small modules with focused responsibilities.
-- Predictable APIs and explicit edge-case behavior.
-- Tests and documentation alongside public features.
-- No fake manual-memory management: Luau uses garbage collection.
-
-Source formatting is inspired by the type-first, compact style of [LocalOneX/MockSignal](https://github.com/LocalOneX/MockSignal). Repository organization follows common Roblox package conventions. Implementations are original.
+The source style takes inspiration from the compact, type-first organization used by [LocalOneX/MockSignal](https://github.com/LocalOneX/MockSignal). Implementations in this repository are original.

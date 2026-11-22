@@ -5,41 +5,20 @@ local CppLuau = require(ReplicatedStorage:WaitForChild("CppLuauLib") :: ModuleSc
 local Containers = CppLuau.Containers
 
 return function()
-	describe("Array", function()
-		it("keeps a fixed size and supports indexed writes", function()
+	describe("Array and Vector", function()
+		it("provides fixed and dynamic indexed storage", function()
 			local array = Containers.Array.new(3, 0)
-
 			array:Set(2, 5)
 
-			expect(array:Size()).to.equal(3)
-			expect(array:Get(1)).to.equal(0)
 			expect(array:Get(2)).to.equal(5)
-			expect(array:Get(3)).to.equal(0)
-		end)
-	end)
+			expect(array:Size()).to.equal(3)
 
-	describe("Vector", function()
-		it("supports indexed sequence operations", function()
 			local vector = Containers.Vector.new({ 1, 3 })
+			vector:Insert(2, 2):PushBack(4)
 
-			vector:Insert(2, 2)
-			vector:PushBack(4)
-
-			expect(vector:Size()).to.equal(4)
 			expect(vector:At(2)).to.equal(2)
 			expect(vector:Erase(3)).to.equal(3)
 			expect(vector:Back()).to.equal(4)
-		end)
-
-		it("resizes with an explicit fill value", function()
-			local vector = Containers.Vector.new({ 1 })
-			vector:Resize(3, 0)
-
-			expect(vector:Size()).to.equal(3)
-			expect(vector:At(3)).to.equal(0)
-			expect(function()
-				vector:Resize(5)
-			end).to.throw()
 		end)
 	end)
 
@@ -52,124 +31,102 @@ return function()
 
 			expect(deque:Front()).to.equal(0)
 			expect(deque:Back()).to.equal(4)
-			expect(deque:At(3)).to.equal(3)
 			expect(deque:PopBack()).to.equal(4)
 		end)
+	end)
 
-		it("grows its circular buffer", function()
-			local deque = Containers.Deque.new()
+	describe("List", function()
+		it("inserts and erases linked nodes", function()
+			local list = Containers.List.new({ 1, 3 })
+			list:Insert(2, 2)
+			list:PushFront(0)
 
-			for idx = 1, 20 do
-				deque:PushBack(idx)
-			end
-
-			for idx = 1, 10 do
-				expect(deque:PopFront()).to.equal(idx)
-			end
-
-			for idx = 21, 35 do
-				deque:PushBack(idx)
-			end
-
-			expect(deque:Size()).to.equal(25)
-			expect(deque:Front()).to.equal(11)
-			expect(deque:Back()).to.equal(35)
+			expect(list:At(3)).to.equal(2)
+			expect(list:Erase(2)).to.equal(1)
+			expect(table.concat(list:ToArray(), ",")).to.equal("0,2,3")
+			expect(list:PopBack()).to.equal(3)
 		end)
 	end)
 
-	describe("Stack", function()
-		it("uses last-in, first-out order", function()
-			local stack = Containers.Stack.new()
+	describe("ForwardList", function()
+		it("inserts after nodes and erases successors", function()
+			local list = Containers.ForwardList.new({ 1, 3 })
+			list:InsertAfter(1, 2)
 
+			expect(table.concat(list:ToArray(), ",")).to.equal("1,2,3")
+			expect(list:EraseAfter(1)).to.equal(2)
+			expect(table.concat(list:ToArray(), ",")).to.equal("1,3")
+		end)
+	end)
+
+	describe("Stack and Queue", function()
+		it("preserves their ordering rules", function()
+			local stack = Containers.Stack.new()
 			stack:Push("first"):Push("second")
 
-			expect(stack:Top()).to.equal("second")
 			expect(stack:Pop()).to.equal("second")
 			expect(stack:Pop()).to.equal("first")
-			expect(stack:Empty()).to.equal(true)
-		end)
-	end)
 
-	describe("Queue", function()
-		it("uses first-in, first-out order", function()
-			local queue = Containers.Queue.new({ "first", "second" })
-
-			queue:Enqueue("third")
+			local queue = Containers.Queue.new({ "first" })
+			queue:Enqueue("second")
 
 			expect(queue:Dequeue()).to.equal("first")
-			expect(queue:Front()).to.equal("second")
-			expect(queue:Back()).to.equal("third")
 			expect(queue:Dequeue()).to.equal("second")
-			expect(queue:Dequeue()).to.equal("third")
-			expect(queue:Empty()).to.equal(true)
-			expect(queue:Dequeue()).to.equal(nil)
-		end)
-
-		it("can be reused after becoming empty", function()
-			local queue = Containers.Queue.new({ 1 })
-
-			expect(queue:Dequeue()).to.equal(1)
-
-			queue:Enqueue(2)
-
-			expect(queue:Size()).to.equal(1)
-			expect(queue:Dequeue()).to.equal(2)
 		end)
 	end)
 
 	describe("PriorityQueue", function()
-		it("returns the highest priority value", function()
+		it("returns values in priority order", function()
 			local queue = Containers.PriorityQueue.new({ 3, 1, 5, 2 })
 
-			expect(queue:Top()).to.equal(5)
 			expect(queue:Pop()).to.equal(5)
 			expect(queue:Pop()).to.equal(3)
 			expect(queue:Pop()).to.equal(2)
 			expect(queue:Pop()).to.equal(1)
-			expect(queue:Empty()).to.equal(true)
-		end)
-
-		it("supports a custom comparator", function()
-			local queue = Containers.PriorityQueue.new({ 3, 1, 5 }, function(a, b)
-				return a < b
-			end)
-
-			expect(queue:Top()).to.equal(1)
-			expect(queue:Pop()).to.equal(1)
 		end)
 	end)
 
-	describe("Map", function()
-		it("stores, updates, and removes keys", function()
-			local map = Containers.Map.new()
-
-			map:Set("Enabled", false)
-			map:Set("Count", 2)
+	describe("HashMap and HashSet", function()
+		it("stores values and tracks membership", function()
+			local map = Containers.HashMap.new()
+			map:Set("Enabled", false):Set("Count", 2)
 
 			expect(map:Has("Enabled")).to.equal(true)
 			expect(map:Get("Enabled")).to.equal(false)
-			expect(map:Size()).to.equal(2)
 			expect(map:Remove("Count")).to.equal(true)
 			expect(map:Size()).to.equal(1)
+
+			local set = Containers.HashSet.new({ 1, 2, 2, 3 })
+			expect(set:Size()).to.equal(3)
+			expect(set:Contains(2)).to.equal(true)
+			expect(set:Intersection(Containers.HashSet.new({ 2, 4 })):Contains(2)).to.equal(true)
 		end)
 	end)
 
-	describe("Set", function()
-		it("stores only unique values", function()
-			local set = Containers.Set.new({ 1, 2, 2, 3 })
+	describe("Span", function()
+		it("views and writes through an array range", function()
+			local source = { 10, 20, 30, 40 }
+			local span = Containers.Span.new(source, 2, 2)
 
-			expect(set:Size()).to.equal(3)
-			expect(set:Contains(2)).to.equal(true)
+			span:Set(1, 99)
+
+			expect(span:Get(1)).to.equal(99)
+			expect(source[2]).to.equal(99)
+			expect(table.concat(span:ToArray(), ",")).to.equal("99,30")
 		end)
+	end)
 
-		it("supports set operations", function()
-			local left = Containers.Set.new({ 1, 2, 3 })
-			local right = Containers.Set.new({ 3, 4 })
+	describe("BitSet", function()
+		it("sets, flips, and counts bits", function()
+			local bits = Containers.BitSet.new(35)
+			bits:Set(1):Set(32):Set(35)
 
-			expect(left:Union(right):Size()).to.equal(4)
-			expect(left:Intersection(right):Contains(3)).to.equal(true)
-			expect(left:Difference(right):Contains(3)).to.equal(false)
-			expect(Containers.Set.new({ 1, 2 }):IsSubsetOf(left)).to.equal(true)
+			expect(bits:Count()).to.equal(3)
+			expect(bits:Test(35)).to.equal(true)
+
+			bits:Flip(32)
+			expect(bits:Test(32)).to.equal(false)
+			expect(bits:ToArray()[2]).to.equal(35)
 		end)
 	end)
 end

@@ -1,49 +1,47 @@
 # Algorithms
 
-The Algorithms module provides common array operations. Operations that return a collection create a new array unless their name explicitly describes iteration.
+The algorithms are split by operation instead of being collected in one generic module.
 
-- Find(values, predicate) — first matching value.
-- FindIndex(values, predicate) — first matching one-based index.
-- Count(values, predicate) — number of matches.
-- CountValue(values, target) — number of equal values.
-- Any(values, predicate) — whether at least one value matches.
-- All(values, predicate) — whether every value matches.
-- Filter(values, predicate) — matching values.
-- Map(values, callback) — transformed values.
-- Reduce(values, callback, initial) — accumulated value.
-- ForEach(values, callback) — visit every value.
-- Sorted(values, comparator?) — sorted copy.
-- Reversed(values) — reversed copy.
-- Unique(values) — first occurrence of each value, preserving order.
+## Sequence
 
-Predicates receive (value, index). Mapping callbacks receive (value, index). Reduce callbacks receive (accumulator, value, index).
+Array transformations and predicates.
 
-~~~lua
-local scores = { 4, 8, 2, 10 }
+- `Find(values, predicate)`, `FindIndex(values, predicate)`
+- `Count(values, predicate)`, `CountValue(values, target)`
+- `Any(values, predicate)`, `All(values, predicate)`
+- `Filter(values, predicate)`, `Map(values, callback)`
+- `Reduce(values, callback, initial)`, `ForEach(values, callback)`
+- `Sorted(values, comparator?)`, `Reversed(values)`, `Unique(values)`
 
-local passing = CppLuau.Algorithms.Filter(scores, function(score)
-	return score >= 5
-end)
+Predicates and mapping callbacks receive value and index. Reduce callbacks receive accumulator, value, and index.
 
-local doubled = CppLuau.Algorithms.Map(passing, function(score)
-	return score * 2
-end)
+## Search
 
-local total = CppLuau.Algorithms.Reduce(doubled, function(sum, score)
-	return sum + score
-end, 0)
+Binary search functions require sorted input.
 
-print(total) -- 36
-~~~
+- `LowerBound(values, target, comparator?)`
+- `UpperBound(values, target, comparator?)`
+- `BinarySearch(values, target, comparator?)`
+- `Contains(values, target, comparator?)`
 
-## Numeric
+Bounds return one-based insertion positions. When a value is not found, BinarySearch returns nil.
 
-Numeric implements arithmetic sequence and accumulation helpers inspired by C++ numeric algorithms.
+## Sort
 
-- Accumulate(values, initial, callback?) — adds values by default or uses a custom operation.
-- Iota(count, initial?, step?) — creates a numeric sequence.
-- GCD(left, right) — greatest common divisor of two integers.
-- LCM(left, right) — least common multiple of two integers.
-- InnerProduct(left, right, initial?) — sum of pairwise products.
+- `Sort(values, comparator?)` sorts the supplied array in place.
+- `StableSort(values, comparator?)` returns a new stable-sorted array.
+- `Merge(left, right, comparator?)` merges two sorted arrays.
+- `IsSorted(values, comparator?)` checks ordering.
 
-GCD and LCM require integer inputs. InnerProduct processes up to the length of the shorter array.
+The default comparator sorts ascending. Custom comparators return true when the left value should appear before the right value.
+
+## Math.Numeric
+
+Arithmetic algorithms.
+
+- `Accumulate(values, initial, callback?)`
+- `Iota(count, initial?, step?)`
+- `GCD(left, right)`, `LCM(left, right)`
+- `InnerProduct(left, right, initial?)`
+
+GCD and LCM require integer inputs. InnerProduct uses the shorter array length.
