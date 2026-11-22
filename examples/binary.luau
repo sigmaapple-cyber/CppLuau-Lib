@@ -5,10 +5,7 @@ local CppLuau = require(ReplicatedStorage:WaitForChild("CppLuauLib") :: ModuleSc
 
 local data = CppLuau.Binary.Buffer.new()
 
-data:WriteU8(1)
-	:WriteU16(250)
-	:WriteF32(3.5)
-	:WriteString("Luau")
+data:WriteU8(1):WriteU16(250):WriteF32(3.5):WriteString("Luau")
 
 data:Seek(0)
 

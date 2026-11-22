@@ -65,11 +65,14 @@ end
 module.new = function(values: { any }?)
 	assert(values == nil or type(values) == "table", "List values must be a table")
 
-	local object = setmetatable({
-		_First = nil;
-		_Last = nil;
-		_Count = 0;
-	} :: RawListObject, { __index = module }) :: ListObject
+	local object = setmetatable(
+		{
+			_First = nil,
+			_Last = nil,
+			_Count = 0,
+		} :: RawListObject,
+		{ __index = module }
+	) :: ListObject
 
 	if values then
 		for _, value in ipairs(values) do
@@ -87,9 +90,9 @@ module.PushFront = function(self: ListObject, value: any)
 	assert(value ~= nil, "List cannot store nil")
 
 	local node: Node = {
-		Value = value;
-		Previous = nil;
-		Next = self._First;
+		Value = value,
+		Previous = nil,
+		Next = self._First,
 	}
 
 	if self._First then
@@ -111,9 +114,9 @@ module.PushBack = function(self: ListObject, value: any)
 	assert(value ~= nil, "List cannot store nil")
 
 	local node: Node = {
-		Value = value;
-		Previous = self._Last;
-		Next = nil;
+		Value = value,
+		Previous = self._Last,
+		Next = nil,
 	}
 
 	if self._Last then
@@ -205,9 +208,9 @@ module.Insert = function(self: ListObject, index: number, value: any)
 	local nextNode = nodeAt(self, index)
 	local previous = nextNode.Previous
 	local node: Node = {
-		Value = value;
-		Previous = previous;
-		Next = nextNode;
+		Value = value,
+		Previous = previous,
+		Next = nextNode,
 	}
 
 	(previous :: Node).Next = node

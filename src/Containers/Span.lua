@@ -36,11 +36,16 @@ module.new = function(source: { [number]: any }, first: number?, count: number?)
 	assert(start % 1 == 0 and start >= 1 and start <= #source + 1, "Span start out of bounds")
 	assert(length % 1 == 0 and length >= 0 and start + length - 1 <= #source, "Span length out of bounds")
 
-	return (setmetatable({
-		_Source = source;
-		_First = start;
-		_Count = length;
-	} :: RawSpanObject, { __index = module })) :: SpanObject
+	return (
+		setmetatable(
+			{
+				_Source = source,
+				_First = start,
+				_Count = length,
+			} :: RawSpanObject,
+			{ __index = module }
+		)
+	) :: SpanObject
 end
 
 --[[

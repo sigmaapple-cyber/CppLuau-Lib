@@ -21,10 +21,7 @@ type ProtoSchema = {
 	ToString: (self: StringViewObject) -> string,
 }
 
-export type StringViewObject = typeof(setmetatable(
-	{} :: RawStringViewObject,
-	{ __index = {} :: ProtoSchema }
-))
+export type StringViewObject = typeof(setmetatable({} :: RawStringViewObject, { __index = {} :: ProtoSchema }))
 
 local module = {}
 
@@ -40,11 +37,16 @@ module.new = function(source: string, first: number?, count: number?)
 	assert(start % 1 == 0 and start >= 1 and start <= #source + 1, "StringView start out of bounds")
 	assert(length % 1 == 0 and length >= 0 and start + length - 1 <= #source, "StringView length out of bounds")
 
-	return (setmetatable({
-		_Source = source;
-		_First = start;
-		_Count = length;
-	} :: RawStringViewObject, { __index = module })) :: StringViewObject
+	return (
+		setmetatable(
+			{
+				_Source = source,
+				_First = start,
+				_Count = length,
+			} :: RawStringViewObject,
+			{ __index = module }
+		)
+	) :: StringViewObject
 end
 
 --[[
@@ -76,7 +78,10 @@ module.Slice = function(self: StringViewObject, first: number, count: number?)
 	assert(first % 1 == 0 and first >= 1 and first <= self._Count + 1, "StringView slice start out of bounds")
 
 	local length = count or (self._Count - first + 1)
-	assert(length % 1 == 0 and length >= 0 and first + length - 1 <= self._Count, "StringView slice length out of bounds")
+	assert(
+		length % 1 == 0 and length >= 0 and first + length - 1 <= self._Count,
+		"StringView slice length out of bounds"
+	)
 
 	return module.new(self._Source, self._First + first - 1, length)
 end
@@ -88,12 +93,7 @@ module.Find = function(self: StringViewObject, value: string, first: number?)
 	local start = first or 1
 	assert(start % 1 == 0 and start >= 1 and start <= self._Count + 1, "StringView search start out of bounds")
 
-	local found = string.find(
-		self._Source,
-		value,
-		self._First + start - 1,
-		true
-	)
+	local found = string.find(self._Source, value, self._First + start - 1, true)
 
 	if not found or found + #value - 1 > self._First + self._Count - 1 then
 		return nil
@@ -113,7 +113,8 @@ end
 	Checks whether the view ends with a value.
 ]]
 module.EndsWith = function(self: StringViewObject, value: string)
-	return self._Count >= #value and string.sub(self._Source, self._First + self._Count - #value, self._First + self._Count - 1) == value
+	return self._Count >= #value
+		and string.sub(self._Source, self._First + self._Count - #value, self._First + self._Count - 1) == value
 end
 
 --[[

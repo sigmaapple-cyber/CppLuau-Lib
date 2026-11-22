@@ -31,10 +31,7 @@ type ProtoSchema = {
 	ToArray: (self: ForwardListObject) -> { any },
 }
 
-export type ForwardListObject = typeof(setmetatable(
-	{} :: RawForwardListObject,
-	{ __index = {} :: ProtoSchema }
-))
+export type ForwardListObject = typeof(setmetatable({} :: RawForwardListObject, { __index = {} :: ProtoSchema }))
 
 local module = {}
 
@@ -55,11 +52,14 @@ end
 module.new = function(values: { any }?)
 	assert(values == nil or type(values) == "table", "ForwardList values must be a table")
 
-	local object = setmetatable({
-		_First = nil;
-		_Last = nil;
-		_Count = 0;
-	} :: RawForwardListObject, { __index = module }) :: ForwardListObject
+	local object = setmetatable(
+		{
+			_First = nil,
+			_Last = nil,
+			_Count = 0,
+		} :: RawForwardListObject,
+		{ __index = module }
+	) :: ForwardListObject
 
 	if values then
 		for _, value in ipairs(values) do
@@ -77,8 +77,8 @@ module.PushFront = function(self: ForwardListObject, value: any)
 	assert(value ~= nil, "ForwardList cannot store nil")
 
 	local node: Node = {
-		Value = value;
-		Next = self._First;
+		Value = value,
+		Next = self._First,
 	}
 
 	self._First = node
@@ -97,8 +97,8 @@ module.PushBack = function(self: ForwardListObject, value: any)
 	assert(value ~= nil, "ForwardList cannot store nil")
 
 	local node: Node = {
-		Value = value;
-		Next = nil;
+		Value = value,
+		Next = nil,
 	}
 
 	if self._Last then
@@ -160,8 +160,8 @@ module.InsertAfter = function(self: ForwardListObject, index: number, value: any
 
 	local previous = nodeAt(self, index)
 	local node: Node = {
-		Value = value;
-		Next = previous.Next;
+		Value = value,
+		Next = previous.Next,
 	}
 
 	previous.Next = node

@@ -15,19 +15,23 @@ return function()
 		end)
 
 		it("maps and chains present values", function()
-			local value = Optional.Some(4):Map(function(number)
-				return number * 2
-			end):AndThen(function(number)
-				return Optional.Some(number + 1)
-			end)
+			local value = Optional.Some(4)
+				:Map(function(number)
+					return number * 2
+				end)
+				:AndThen(function(number)
+					return Optional.Some(number + 1)
+				end)
 
 			expect(value:Unwrap()).to.equal(9)
 		end)
 
 		it("preserves empty values", function()
-			expect(Optional.None():Map(function(value)
-				return value
-			end):IsNone()).to.equal(true)
+			expect(Optional.None()
+				:Map(function(value)
+					return value
+				end)
+				:IsNone()).to.equal(true)
 		end)
 	end)
 end

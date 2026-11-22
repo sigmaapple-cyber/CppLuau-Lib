@@ -29,10 +29,15 @@ local module = {}
 	Creates a complex number a + bi.
 ]]
 module.new = function(real: number, imaginary: number?)
-	return (setmetatable({
-		Real = real;
-		Imaginary = imaginary or 0;
-	} :: RawComplexObject, { __index = module })) :: ComplexObject
+	return (
+		setmetatable(
+			{
+				Real = real,
+				Imaginary = imaginary or 0,
+			} :: RawComplexObject,
+			{ __index = module }
+		)
+	) :: ComplexObject
 end
 
 --[[

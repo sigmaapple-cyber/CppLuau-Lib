@@ -17,11 +17,14 @@ return function()
 				return value == 8
 			end)).to.equal(4)
 
-			local doubled = Sequence.Map(Sequence.Filter(values, function(value)
-				return value % 2 == 0
-			end), function(value)
-				return value * 2
-			end)
+			local doubled = Sequence.Map(
+				Sequence.Filter(values, function(value)
+					return value % 2 == 0
+				end),
+				function(value)
+					return value * 2
+				end
+			)
 
 			expect(table.concat(doubled, ",")).to.equal("4,8,12,16")
 		end)
@@ -57,10 +60,11 @@ return function()
 	describe("Algorithms.Sort", function()
 		it("sorts, stably sorts, and merges arrays", function()
 			local values = { 4, 1, 3, 2 }
+			local Sort = CppLuau.Algorithms.Sort
 
-			expect(table.concat(CppLuau.Algorithms.Sort.StableSort(values), ",")).to.equal("1,2,3,4")
-			expect(table.concat(CppLuau.Algorithms.Sort.Merge({ 1, 3 }, { 2, 4 }), ",")).to.equal("1,2,3,4")
-			expect(CppLuau.Algorithms.Sort.IsSorted(values)).to.equal(false)
+			expect(table.concat(Sort.StableSort(values), ",")).to.equal("1,2,3,4")
+			expect(table.concat(Sort.Merge({ 1, 3 }, { 2, 4 }), ",")).to.equal("1,2,3,4")
+			expect(Sort.IsSorted(values)).to.equal(false)
 		end)
 	end)
 end

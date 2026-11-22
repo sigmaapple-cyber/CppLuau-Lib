@@ -73,11 +73,16 @@ module.new = function(capacity: number?)
 	local size = capacity or 16
 	assert(size % 1 == 0 and size >= 0, "Buffer capacity must be a non-negative integer")
 
-	return (setmetatable({
-		_Data = buffer.create(size);
-		_Length = 0;
-		_Cursor = 0;
-	} :: RawBufferObject, { __index = module })) :: BufferObject
+	return (
+		setmetatable(
+			{
+				_Data = buffer.create(size),
+				_Length = 0,
+				_Cursor = 0,
+			} :: RawBufferObject,
+			{ __index = module }
+		)
+	) :: BufferObject
 end
 
 --[[

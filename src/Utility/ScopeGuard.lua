@@ -17,18 +17,20 @@ type ProtoSchema = {
 	Count: (self: ScopeGuardObject) -> number,
 }
 
-export type ScopeGuardObject = typeof(setmetatable(
-	{} :: RawScopeGuardObject,
-	{ __index = {} :: ProtoSchema }
-))
+export type ScopeGuardObject = typeof(setmetatable({} :: RawScopeGuardObject, { __index = {} :: ProtoSchema }))
 
 local module = {}
 
 module.new = function()
-	return (setmetatable({
-		_Callbacks = {};
-		_Closed = false;
-	} :: RawScopeGuardObject, { __index = module })) :: ScopeGuardObject
+	return (
+		setmetatable(
+			{
+				_Callbacks = {},
+				_Closed = false,
+			} :: RawScopeGuardObject,
+			{ __index = module }
+		)
+	) :: ScopeGuardObject
 end
 
 module.Defer = function(self: ScopeGuardObject, callback: () -> ())

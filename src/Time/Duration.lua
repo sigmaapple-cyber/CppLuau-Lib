@@ -29,9 +29,14 @@ local module = {}
 module.new = function(seconds: number)
 	assert(seconds == seconds and math.abs(seconds) < math.huge, "Duration must be finite")
 
-	return (setmetatable({
-		_Seconds = seconds;
-	} :: RawDurationObject, { __index = module })) :: DurationObject
+	return (
+		setmetatable(
+			{
+				_Seconds = seconds,
+			} :: RawDurationObject,
+			{ __index = module }
+		)
+	) :: DurationObject
 end
 
 --[[

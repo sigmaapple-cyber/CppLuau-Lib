@@ -27,10 +27,15 @@ export type HashMapObject = typeof(setmetatable({} :: RawHashMapObject, { __inde
 local module = {}
 
 module.new = function()
-	return (setmetatable({
-		_Items = {};
-		_Count = 0;
-	} :: RawHashMapObject, { __index = module })) :: HashMapObject
+	return (
+		setmetatable(
+			{
+				_Items = {},
+				_Count = 0,
+			} :: RawHashMapObject,
+			{ __index = module }
+		)
+	) :: HashMapObject
 end
 
 --[[

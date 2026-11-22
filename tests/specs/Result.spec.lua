@@ -12,9 +12,11 @@ return function()
 		end)
 
 		it("maps success and error values", function()
-			expect(Result.Ok(5):Map(function(value)
-				return value * 3
-			end):Unwrap()).to.equal(15)
+			expect(Result.Ok(5)
+				:Map(function(value)
+					return value * 3
+				end)
+				:Unwrap()).to.equal(15)
 
 			expect(Result.Err("bad"):MapErr(string.upper):UnwrapErr()).to.equal("BAD")
 		end)

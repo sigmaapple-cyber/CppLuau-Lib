@@ -50,10 +50,15 @@ module.new = function(size: number, fill: boolean?)
 		words[count] = bit32.lshift(1, size % 32) - 1
 	end
 
-	return (setmetatable({
-		_Words = words;
-		_Size = size;
-	} :: RawBitSetObject, { __index = module })) :: BitSetObject
+	return (
+		setmetatable(
+			{
+				_Words = words,
+				_Size = size,
+			} :: RawBitSetObject,
+			{ __index = module }
+		)
+	) :: BitSetObject
 end
 
 --[[

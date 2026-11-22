@@ -26,7 +26,13 @@ module.InverseLerp = function(from: number, to: number, value: number): number
 	return (value - from) / (to - from)
 end
 
-module.Remap = function(value: number, fromMinimum: number, fromMaximum: number, toMinimum: number, toMaximum: number): number
+module.Remap = function(
+	value: number,
+	fromMinimum: number,
+	fromMaximum: number,
+	toMinimum: number,
+	toMaximum: number
+): number
 	local alpha = module.InverseLerp(fromMinimum, fromMaximum, value)
 	return module.Lerp(toMinimum, toMaximum, alpha)
 end

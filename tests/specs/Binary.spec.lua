@@ -8,11 +8,7 @@ return function()
 		it("writes and reads primitive values", function()
 			local data = CppLuau.Binary.Buffer.new(1)
 
-			data:WriteU8(255)
-				:WriteI16(-1234)
-				:WriteU32(123456)
-				:WriteF32(1.5)
-				:WriteString("Luau")
+			data:WriteU8(255):WriteI16(-1234):WriteU32(123456):WriteF32(1.5):WriteString("Luau")
 
 			expect(data:Size()).to.equal(15)
 			data:Seek(0)

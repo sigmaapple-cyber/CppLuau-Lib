@@ -27,11 +27,16 @@ local module = {}
 	Creates a stopped timer.
 ]]
 module.new = function()
-	return (setmetatable({
-		_StartedAt = nil;
-		_Elapsed = 0;
-		_Running = false;
-	} :: RawTimerObject, { __index = module })) :: TimerObject
+	return (
+		setmetatable(
+			{
+				_StartedAt = nil,
+				_Elapsed = 0,
+				_Running = false,
+			} :: RawTimerObject,
+			{ __index = module }
+		)
+	) :: TimerObject
 end
 
 --[[

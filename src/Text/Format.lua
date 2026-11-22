@@ -18,14 +18,16 @@ end
 module.Template = function(template: string, ...): string
 	local values = table.pack(...)
 
-	return (string.gsub(template, "{(%d+)}", function(index)
-		local value = values[tonumber(index) + 1]
-		if value == nil then
-			return "{" .. index .. "}"
-		end
+	return (
+		string.gsub(template, "{(%d+)}", function(index)
+			local value = values[tonumber(index) + 1]
+			if value == nil then
+				return "{" .. index .. "}"
+			end
 
-		return tostring(value)
-	end))
+			return tostring(value)
+		end)
+	)
 end
 
 --[[

@@ -41,9 +41,12 @@ module.new = function(seed: number)
 		state = 0x6D2B79F5
 	end
 
-	return (setmetatable({
-		_State = state;
-	} :: RawRandomObject, { __index = module })) :: RandomObject
+	return (setmetatable(
+		{
+			_State = state,
+		} :: RawRandomObject,
+		{ __index = module }
+	)) :: RandomObject
 end
 
 --[[
