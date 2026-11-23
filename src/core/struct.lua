@@ -72,10 +72,13 @@ module.new = function(name: string, schema: { [string]: any }): StructObject
 
 	freeze(defaults, {})
 
-	return setmetatable({
-		Name = name,
-		Schema = defaults,
-	} :: RawStructObject, { __index = module }) :: StructObject
+	return setmetatable(
+		{
+			Name = name,
+			Schema = defaults,
+		} :: RawStructObject,
+		{ __index = module }
+	) :: StructObject
 end
 
 module.Create = function(self: StructObject, values: StructValue?): StructValue

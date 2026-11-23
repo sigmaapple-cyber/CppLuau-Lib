@@ -17,10 +17,7 @@ type QueueMethods<T> = {
 	ToArray: (self: Queue<T>) -> { T },
 }
 
-export type Queue<T> = typeof(setmetatable(
-	{} :: RawQueue<T>,
-	{ __index = {} :: QueueMethods<T> }
-))
+export type Queue<T> = typeof(setmetatable({} :: RawQueue<T>, { __index = {} :: QueueMethods<T> }))
 
 local module = {}
 
@@ -50,11 +47,14 @@ module.new = function<T>(values: { T }?): Queue<T>
 		end
 	end
 
-	return setmetatable({
-		_Items = raw,
-		_First = if last > 0 then 1 else 0,
-		_Last = last,
-	} :: RawQueue<T>, { __index = module }) :: Queue<T>
+	return setmetatable(
+		{
+			_Items = raw,
+			_First = if last > 0 then 1 else 0,
+			_Last = last,
+		} :: RawQueue<T>,
+		{ __index = module }
+	) :: Queue<T>
 end
 
 module.Enqueue = function<T>(self: Queue<T>, value: T): Queue<T>

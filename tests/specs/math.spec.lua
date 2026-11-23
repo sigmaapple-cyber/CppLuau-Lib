@@ -27,7 +27,7 @@ return function()
 
 	describe("Math.Bit", function()
 		it("performs bit operations", function()
-			local Bit = luapp.math.Bit
+			local Bit = luapp.math.bit
 
 			expect(Bit.And(7, 3)).to.equal(3)
 			expect(Bit.Or(4, 1)).to.equal(5)

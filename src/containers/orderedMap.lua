@@ -27,10 +27,13 @@ export type OrderedMap<K, V> = typeof(setmetatable(
 local module = {}
 
 module.new = function<K, V>(): OrderedMap<K, V>
-	return setmetatable({
-		_Keys = {},
-		_Items = {},
-	} :: RawOrderedMap<K, V>, { __index = module }) :: OrderedMap<K, V>
+	return setmetatable(
+		{
+			_Keys = {},
+			_Items = {},
+		} :: RawOrderedMap<K, V>,
+		{ __index = module }
+	) :: OrderedMap<K, V>
 end
 
 module.Set = function<K, V>(self: OrderedMap<K, V>, key: K, value: V): OrderedMap<K, V>

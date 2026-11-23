@@ -11,7 +11,7 @@ return function()
 
 			expect(Search.LowerBound(values, 2)).to.equal(2)
 			expect(Search.UpperBound(values, 2)).to.equal(5)
-			expect(Search.binarySearch(values, 4)).to.equal(5)
+			expect(Search.BinarySearch(values, 4)).to.equal(5)
 		end)
 	end)
 

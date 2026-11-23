@@ -14,20 +14,20 @@ type ArrayMethods<T> = {
 	ForEach: (self: Array<T>, callback: (T, number) -> ()) -> (),
 }
 
-export type Array<T> = typeof(setmetatable(
-	{} :: RawArray<T>,
-	{ __index = {} :: ArrayMethods<T> }
-))
+export type Array<T> = typeof(setmetatable({} :: RawArray<T>, { __index = {} :: ArrayMethods<T> }))
 
 local module = {}
 
 module.new = function<T>(size: number, fill: T): Array<T>
 	assert(size % 1 == 0 and size >= 0, "Array size must be a non-negative integer")
 
-	return setmetatable({
-		_Items = table.create(size, fill),
-		_Size = size,
-	} :: RawArray<T>, { __index = module }) :: Array<T>
+	return setmetatable(
+		{
+			_Items = table.create(size, fill),
+			_Size = size,
+		} :: RawArray<T>,
+		{ __index = module }
+	) :: Array<T>
 end
 
 module.Get = function<T>(self: Array<T>, index: number): T

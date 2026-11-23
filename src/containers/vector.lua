@@ -21,19 +21,19 @@ type VectorMethods<T> = {
 	ForEach: (self: Vector<T>, callback: (T, number) -> ()) -> (),
 }
 
-export type Vector<T> = typeof(setmetatable(
-	{} :: RawVector<T>,
-	{ __index = {} :: VectorMethods<T> }
-))
+export type Vector<T> = typeof(setmetatable({} :: RawVector<T>, { __index = {} :: VectorMethods<T> }))
 
 local module = {}
 
 module.new = function<T>(values: { T }?): Vector<T>
 	assert(values == nil or type(values) == "table", "Vector values must be a table")
 
-	return setmetatable({
-		_Items = if values then table.clone(values) else {},
-	} :: RawVector<T>, { __index = module }) :: Vector<T>
+	return setmetatable(
+		{
+			_Items = if values then table.clone(values) else {},
+		} :: RawVector<T>,
+		{ __index = module }
+	) :: Vector<T>
 end
 
 module.PushBack = function<T>(self: Vector<T>, value: T): Vector<T>
