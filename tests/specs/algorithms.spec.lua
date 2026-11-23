@@ -49,11 +49,12 @@ return function()
 	describe("Algorithms.search", function()
 		it("finds bounds in sorted data", function()
 			local values = { 1, 2, 2, 2, 4, 8 }
+			local search = luapp.algorithms.search
 
-			expect(luapp.algorithms.search.LowerBound(values, 2)).to.equal(2)
-			expect(luapp.algorithms.search.UpperBound(values, 2)).to.equal(5)
-			expect(luapp.algorithms.search.binarySearch(values, 4)).to.equal(5)
-			expect(luapp.algorithms.search.Contains(values, 9)).to.equal(false)
+			expect(search.LowerBound(values, 2)).to.equal(2)
+			expect(search.UpperBound(values, 2)).to.equal(5)
+			expect(search.BinarySearch(values, 4)).to.equal(5)
+			expect(search.Contains(values, 9)).to.equal(false)
 		end)
 	end)
 

@@ -72,6 +72,7 @@ return function()
 
 			expect(queue:Dequeue()).to.equal("first")
 			expect(queue:Dequeue()).to.equal("second")
+			expect(#queue:ToArray()).to.equal(0)
 		end)
 	end)
 

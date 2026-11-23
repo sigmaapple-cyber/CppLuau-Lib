@@ -124,10 +124,11 @@ module.Clear = function<T>(self: Queue<T>)
 end
 
 module.ToArray = function<T>(self: Queue<T>): { T }
-	local raw = table.create(self:Size())
+	local count = self:Size()
+	local raw = table.create(count)
 
-	for idx = self._First, self._Last do
-		table.insert(raw, self._Items[idx])
+	for offset = 0, count - 1 do
+		raw[offset + 1] = self._Items[self._First + offset]
 	end
 
 	return raw
