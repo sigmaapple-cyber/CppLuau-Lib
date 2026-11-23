@@ -33,7 +33,7 @@ jobs:
         run: wally install
 
       - name: Build library
-        run: rojo build default.project.json -o /tmp/CppLuauLib.rbxm
+        run: rojo build default.project.json -o /tmp/luapp.rbxm
 
       - name: Build test place
-        run: rojo build test.project.json -o /tmp/CppLuauLib-Tests.rbxlx
+        run: rojo build test.project.json -o /tmp/luapp-tests.rbxlx

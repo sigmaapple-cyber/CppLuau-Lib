@@ -1,10 +1,10 @@
 {
-	"name": "CppLuauLib-Tests",
+	"name": "luapp-tests",
 	"tree": {
 		"$className": "DataModel",
 		"ReplicatedStorage": {
 			"$className": "ReplicatedStorage",
-			"CppLuauLib": {
+			"luapp": {
 				"$path": "src"
 			},
 			"Tests": {
@@ -17,7 +17,7 @@
 		"ServerScriptService": {
 			"$className": "ServerScriptService",
 			"RunTests": {
-				"$path": "tests/RunTests.server.lua"
+				"$path": "tests/runTests.server.lua"
 			}
 		}
 	}

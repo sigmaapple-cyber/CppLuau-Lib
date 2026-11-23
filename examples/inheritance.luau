@@ -1,9 +1,9 @@
 --!strict
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local CppLuau = require(ReplicatedStorage:WaitForChild("CppLuauLib") :: ModuleScript)
+local luapp = require(ReplicatedStorage:WaitForChild("luapp") :: ModuleScript)
 
-local Class = CppLuau.Core.Class
+local Class = luapp.core.Class
 
 local Entity = Class.new("Entity"):Constructor(function(self, name: string)
 	self.Name = name

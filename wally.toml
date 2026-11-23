@@ -1,7 +1,7 @@
 [package]
-name = "sigmaapple/cpp-luau-lib"
-description = "C++-inspired programming concepts implemented in Luau."
-version = "0.1.0"
+name = "sigmaapple/luapp"
+description = "C++-inspired data structures and programming primitives for Luau."
+version = "0.2.0"
 registry = "https://github.com/UpliftGames/wally-index"
 realm = "shared"
 include = ["src/**", "docs/**", "default.project.json", "README.md", "wally.toml"]

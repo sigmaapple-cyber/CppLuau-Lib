@@ -1,59 +1,49 @@
-# CppLuau-Lib
+# luapp
 
-A C++-inspired Luau library for Roblox. Its public API is organized into category namespaces under `src`.
+A C++-inspired library written in native Luau for Roblox. Work on the existing library as a real codebase, not as a module-count exercise.
 
-## Public API map
+## Layout
 
-- `Core`: Class, Struct, Enum, Interface, Namespace.
-- `Values`: Optional, Result, Pair, Tuple, Variant, Reference.
-- `Containers`: Array, Vector, Deque, List, ForwardList, Stack, Queue, PriorityQueue, HashMap, HashSet, Span, BitSet.
-- `Algorithms`: Sequence, Search, Sort.
-- `Math`: Scalar, Numeric, Random, Bit, Complex.
-- `Text`: String, StringBuilder, StringView, Format.
-- `Utility`: Functional, Iterator, TypeInfo, ScopeGuard.
-- `Time`: Clock, Duration, Timer.
-- `Binary`: Buffer.
+- `src/core`: class, struct, enum, interface, namespace.
+- `src/values`: optional, result, pair, tuple, variant, reference.
+- `src/containers`: sequential, linked, associative, and bit containers.
+- `src/algorithms`: sequence, search, sort, and heap algorithms.
+- `src/math`, `src/text`, `src/time`, `src/binary`: focused domain modules.
+- `src/utility`: functional, iteration, type inspection, and cleanup helpers.
+- Every category exports through its `init.lua`; `src/init.lua` is the public entry point.
 
-`src/init.lua` is the only public entry point. Category folders each expose an `init.lua`.
+## Luau style
 
-## Coding style
+- Use `--!strict` in every source and test module.
+- Use lower-camel names for module files, local variables, and namespace exports.
+- Use PascalCase for public methods and exported type names.
+- Declare raw object shapes and prototype types near the top of an object module.
+- Prefer direct tables and metatables. Do not introduce a framework to wrap a simple table.
+- Give collection APIs generic type parameters when the stored value type can be expressed.
+- Use a local helper only when it removes meaningful duplication or clarifies an algorithm.
+- Keep functions short and explicit. Avoid clever control flow, speculative abstractions, and pointless defensive code.
+- Comments explain public contracts or non-obvious algorithms. Do not narrate obvious statements.
+- Follow the formatting already configured in `stylua.toml`.
 
-Follow the type-first, compact Luau style in LocalOneX/MockSignal as a reference.
+## Design
 
-- Start source modules with `--!strict`.
-- Put raw object shapes, prototype schemas, and exported types near the top.
-- Prefer `local module = {}`, `module.new = function(...)`, and `module.Method = function(self: Type, ...)`.
-- Use direct metatables and `__index` for object behavior.
-- Keep function bodies focused. Avoid framework layers around simple tables.
-- Use natural variable names such as `raw`, `self`, `callback`, `node`, and `idx`.
-- Tabs for indentation; run StyLua before committing.
-- Comments should describe public behavior or a non-obvious algorithm, not narrate each line.
-- Add generics where they describe a meaningful public contract.
-
-## API rules
-
-- Export new modules through their category `init.lua` and root `src/init.lua`.
-- Keep names precise. Use `HashMap` and `HashSet` for hash-table-backed collections.
-- Keep unrelated features out of an existing module.
-- Document indexing conventions, ordering, ownership, and complexity where relevant.
-- Luau has garbage collection. Do not claim pointers, destructors, or manual memory management.
-- Add TestEZ coverage and an API note for every new public module.
-- Update examples when public naming changes.
+- Preserve Luau and Roblox semantics; do not pretend this is C++ execution.
+- Document index bases, iteration order, mutation, and complexity when they matter.
+- Do not silently discard input or invent behavior for invalid input.
+- Keep ordered and unordered containers distinct.
+- Do not expose internals when a clear method can express the operation.
+- Add tests for normal use, boundary cases, and regressions.
+- Update the relevant guide and examples when public behavior changes.
+- Never copy source implementations from reference repositories.
 
 ## Validation
 
-~~~sh
+```sh
 stylua --check src tests examples
 selene src
 wally install
-rojo build default.project.json -o /tmp/CppLuau.rbxm
-rojo build test.project.json -o /tmp/CppLuau-Tests.rbxlx
-~~~
+rojo build default.project.json -o /tmp/luapp.rbxm
+rojo build test.project.json -o /tmp/luapp-tests.rbxlx
+```
 
-The TestEZ place must also be run in Roblox Studio. Do not claim runtime tests passed unless they were executed.
-
-## Repository rules
-
-- Do not copy another repository's implementation.
-- Do not create empty placeholder modules.
-- Keep generated Wally packages and build outputs out of commits.
+The TestEZ suite must run inside Roblox Studio. Do not report runtime tests as passed based only on a successful Rojo build.

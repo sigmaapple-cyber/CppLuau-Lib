@@ -1,43 +1,35 @@
 # Contributing
 
-CppLuau-Lib is an early-stage Luau library. Keep changes focused, typed, tested, and consistent with the existing API.
+Keep changes small enough to review, explicit in behavior, and consistent with Luau's runtime.
 
-## Before changing code
+## Before editing
 
 1. Read [AGENTS.md](AGENTS.md).
-2. Check the existing module and its tests.
-3. Keep public behavior and naming consistent unless the change is intentional and documented.
+2. Inspect the implementation and its tests.
+3. Check whether an existing module already owns the behavior.
 
-## Code style
+## Source rules
 
 - Use `--!strict`.
-- Follow the type-first, metatable-driven style used by LocalOneX/MockSignal.
-- Prefer small functions and direct Luau operations.
-- Keep comments purposeful and focused on public behavior.
-- Avoid broad refactors unrelated to the feature.
+- Prefer lower-camel module names and direct module tables.
+- Keep object shapes and exported types near the top of each module.
+- Use generics for collection contracts when they genuinely preserve type information.
+- Avoid redundant wrappers, speculative abstractions, and comments that repeat the code.
+- Document ordering, index bases, mutation, and complexity where relevant.
 
-## Tests
+## Tests and checks
 
-Add or update TestEZ specs under `tests/specs`. Cover normal behavior, edge cases, and regression cases for public APIs.
-
-Run:
+Add TestEZ coverage for normal behavior, boundaries, and regressions.
 
 ```sh
 stylua --check src tests examples
 selene src
 wally install
-rojo build test.project.json -o /tmp/CppLuauLib-Tests.rbxlx
+rojo build test.project.json -o /tmp/luapp-tests.rbxlx
 ```
 
-Open the test place in Roblox Studio and press **Play** to execute the server test runner.
+Run the test place in Roblox Studio to execute TestEZ. Build success is not runtime test success.
 
 ## Pull requests
 
-Use a focused title and describe:
-
-- What changed.
-- Why the change is needed.
-- Which tests or checks were run.
-- Any public API or compatibility impact.
-
-Do not claim a check passed unless it was actually executed.
+Describe the behavior changed, why it belongs in the library, compatibility impact, and the checks actually run. Do not claim a check passed unless it ran.

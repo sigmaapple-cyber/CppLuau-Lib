@@ -1,9 +1,9 @@
 --!strict
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local CppLuau = require(ReplicatedStorage:WaitForChild("CppLuauLib") :: ModuleScript)
+local luapp = require(ReplicatedStorage:WaitForChild("luapp") :: ModuleScript)
 
-local data = CppLuau.Binary.Buffer.new()
+local data = luapp.binary.Buffer.new()
 
 data:WriteU8(1):WriteU16(250):WriteF32(3.5):WriteString("Luau")
 

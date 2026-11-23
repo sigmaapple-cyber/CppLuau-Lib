@@ -1,22 +1,18 @@
 # Changelog
 
-All notable changes to CppLuau-Lib are documented here.
-
-## Unreleased
+## 0.2.0 — Unreleased
 
 ### Added
-- Doubly linked List and singly linked ForwardList containers.
-- Non-owning array Span and fixed-size BitSet.
-- Binary search, stable sorting, merge, and sorted checks.
-- Seeded xorshift32 random generator, bit operations, and complex numbers.
-- StringView and positional text formatting.
-- Clock, Duration, and Timer modules.
-- Growable binary Buffer with primitive reads and writes.
-- TestEZ coverage for the new data structures and APIs.
+- OrderedMap, preserving insertion order while providing key lookup.
+- Heap algorithms: MakeHeap, PushHeap, PopHeap, SortHeap, and IsHeap.
+- UTF-8 helpers for validation, character length, slicing, codepoints, and byte offsets.
 
-### Changed
-- Reorganized the public API into Core, Values, Containers, Algorithms, Math, Text, Utility, Time, and Binary namespaces.
-- Renamed Map and Set to HashMap and HashSet to describe their hash-table implementation.
-- Renamed generic Math and Type modules to Math.Scalar and Utility.TypeInfo.
-- Replaced flat public exports with category-based exports.
-- Updated guides, examples, and agent instructions for the new layout.
+### Improved
+- Generic public types for Array, Vector, and Queue.
+- Struct schemas are recursively frozen and reject unknown override fields.
+- Queue periodically compacts its consumed prefix to avoid unbounded index growth.
+- Public module paths and namespace exports use lower-camel naming.
+- Package identity and project files use the name `luapp`.
+
+### Notes
+- C++ concepts are represented using Luau tables, types, and the Roblox runtime. No C++ ABI or manual memory model is implied.

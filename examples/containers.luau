@@ -1,10 +1,10 @@
 --!strict
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local CppLuau = require(ReplicatedStorage:WaitForChild("CppLuauLib") :: ModuleScript)
+local luapp = require(ReplicatedStorage:WaitForChild("luapp") :: ModuleScript)
 
-local Containers = CppLuau.Containers
-local Math = CppLuau.Math
+local Containers = luapp.containers
+local Math = luapp.math
 
 local scores = Containers.Vector.new({ 10, 20, 30 })
 scores:PushBack(40)

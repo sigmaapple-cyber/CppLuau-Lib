@@ -1,5 +1,5 @@
 {
-	"name": "CppLuauLib",
+	"name": "luapp",
 	"tree": {
 		"$path": "src"
 	}
